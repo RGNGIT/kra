@@ -2,59 +2,188 @@
 
 namespace WinFormsApp1
 {
+    public class KRAResultItem
+    {
+        public Double r { get; set; }
+    };
+
     public class KRA
     {
-        public double elasticAl;
-        public double elasticCu;
-        public double r;
-        public double rIndex;
-        public double n;
-        public string regressionExspressionAl;
-        public string regressionExpressionCu;
-        private List<double> _alCreated;
-        private List<double> _alBought;
-        private List<double> _cuCreated;
-        private List<double> _cuBought;
         private MathHelper _mathHelper = new MathHelper();
-        public double countA0;
-        public double countA1;
-        public double sigmaY;
-        public double sigmaYX;
-        public double bigR;
+        public List<KRAResultItem> _result = new();
+        List<List<double>> _values;
+        List<List<double>> valuesTransposed = new();
+        List<double> transposedYMultiply = new();
+        List<List<double>> transposedMultiply = new();
+        List<List<double>> transposedMultiplyBack = new();
+        List<List<double>> initialValuesTransposed = new();
+        public List<double> finalKoefs = new(); // коэфициенты уравнения регрессии
+        public KraResult result = new(); //Средняя ошибка аппроксимации
+        List<double> _y;
+        public List<List<double>> pairCorrelations = new();
 
-        public void setValues(List<double> alCreated, List<double> alBought, List<double> cuCreated, List<double> cuBought) {
-            this._alCreated = alCreated; this._alBought = alBought; this._cuCreated = cuCreated; this._cuBought = cuBought;
+        public void setValues(List<List<double>> values, List<double> y) {
+            this._values = values;
+            this._y = y;
         }
 
         public void startKra()
         {
-            double a0Al = this.a0(this._alCreated, this._alBought);
-            double a1Al = this.a1(this._alCreated, this._alBought);
-            double a0Cu = this.a0(this._cuCreated, this._cuBought);
-            double a1Cu = this.a1(this._cuCreated, this._cuBought);
-            this.countA0 = a0Al;
-            this.countA1 = a1Al;
-            this.sigmaY = this.calculateSigmaY(this._alBought);
-            this.sigmaYX = this.calculateSigmaYX(this._alCreated, this._alBought);
-            this.bigR = this.calculateRBig(this._alCreated, this._alBought);
-            this.elasticAl = this.calculateElastic(this._alCreated, this._alBought, a1Al);
-            this.elasticCu = this.calculateElastic(this._cuCreated, this._cuBought, a1Cu);
-            this.r = this.calculateR(this._alCreated, this._alBought);
-            this.regressionExspressionAl = $"{this.countA0} + {this.countA1}x";
+            for (int i = 0; i < this._values.Count; i++)
+            {
+                List<double> list = new();
+                for (int j = 0; j < this._values.Count; j++)
+                {
+                    list.Add(this.calculatePairCorrelations(this._values[i], this._values[j]));
+                }
+                list.Add(this.calculatePairCorrelations(this._values[i], this._y));
+                this.pairCorrelations.Add(list);
+            }
+            List<double> listY = new();
+            for (int i = 0; i < this._values.Count; i++)
+            {
+                listY.Add(this.calculatePairCorrelations(this._y, this._values[i]));
+            }
+            listY.Add(this.calculatePairCorrelations(this._y, this._y));
+            this.pairCorrelations.Add(listY); // парные кореляции
+
+            for (int i = 0; i < this._values.Count; i++)
+            {
+                KRAResultItem item = new();
+                item.r = this.calculateR(this._values[i], this._y);
+                _result.Add(item);
+            }
+
+            List<double> ones = new List<double>();
+            for (int i = 0; i < _y.Count; i++)
+            {
+                ones.Add(1);
+            }
+
+            this.initialValuesTransposed = this._mathHelper.transposeMatrix(this._values);
+            this._values.Insert(0, ones);
+            this.valuesTransposed = this._mathHelper.transposeMatrix(this._values);
+          
+            this.transposedMultiply = this._mathHelper.multiplyMatrixes(this.valuesTransposed, this._values);
+            this.transposedYMultiply = this._mathHelper.multiplyMatrix(this.valuesTransposed, this._y);
+            this.transposedMultiplyBack = this._mathHelper.backMatrix(this.transposedMultiply);
+            this.finalKoefs = this._mathHelper.multiplyMatrix(this.transposedMultiplyBack, this.transposedYMultiply);
+            this.result = this.calcKraResults();
         }
 
-        private double a0(List<double> x, List<double> y) => (this._mathHelper.getSumValue(y) * this._mathHelper.getSumSquared(x) - this._mathHelper.getSumListsMultiplied(x, y) * this._mathHelper.getSumValue(x)) / (x.Count * this._mathHelper.getSumSquared(x) - Math.Pow(this._mathHelper.getSumValue(x), 2));
+        private KraResult calcKraResults()
+        {
+            double epsilonSquared = 0; // оценка дисперсии
+            double epsilonY = 0; 
 
-        private double a1(List<double> x, List<double> y) => (x.Count * this._mathHelper.getSumListsMultiplied(x, y) - this._mathHelper.getSumValue(x) * this._mathHelper.getSumValue(y)) / (x.Count * this._mathHelper.getSumSquared(x) - Math.Pow(this._mathHelper.getSumValue(x), 2));
+            for (int i = 0; i < this._y.Count; i++)
+            {
+                double predict = this.calcYPredict(this.initialValuesTransposed[i]);
+                double epsilon = this._y[i] - predict;
+                epsilonSquared += Math.Pow(epsilon, 2);
+                epsilonY += Math.Abs(epsilon / this._y[i]);
+            }
 
-        private double calculateElastic(List<double> x, List<double> y, double a1) => a1 * this._mathHelper.getAverageValue(x) / this._mathHelper.getAverageValue(y);
+            double avgApproximation = epsilonY / this._y.Count * 100; // средняя ошибка аппроксимации
+            double unshiftedDispersion = (1 / (this._y.Count - (this._values.Count - 1) - 1)) * epsilonSquared; // несмещенная оценка дисперсии 
+            double avgSquaredShift = Math.Sqrt(unshiftedDispersion); // среднеквадратическое отклонение
+
+            List<double> paramsDispersion = new(); // дисперсия параметров
+            List<List<double>> covariantMatrix = this._mathHelper.multiplyMatrixToNumber(this.transposedMultiplyBack, unshiftedDispersion); // оценка ковариационной матрицы вектора
+
+            for (int i = 0; i < covariantMatrix.Count; i++)
+            {
+                paramsDispersion.Add(Math.Sqrt(covariantMatrix[i][i]));
+            }
+
+            List<double> elastics = new(); // частные коэфициенты эластичности
+
+            for (int i = 1; i < this._values.Count; i++)
+            {
+                elastics.Add(this.finalKoefs[i] * this._mathHelper.getAverageValue(this._values[i]) / this._mathHelper.getAverageValue(this._y));
+            }
+
+            List<double> studentCriterias = new(); // t - критерии стьюдента
+
+            for (int i = 0; i < this.finalKoefs.Count; i++)
+            {
+                studentCriterias.Add(Math.Abs(finalKoefs[i] / paramsDispersion[i]));
+            }
+            double lower = this.calcRLower();
+            double rSquared = Math.Round(1 - (epsilonSquared / (lower)), 4);
+
+            double fisherUpper = rSquared / (1 - rSquared);
+
+            double fisherLowerUpper = this._y.Count - (this._values.Count - 1) - 1;
+            double fisherLowerLower = this._values.Count - 1;
+
+            double fisherLower = fisherLowerUpper / fisherLowerLower;
+
+            double fisher = fisherUpper * fisherLower;
+            KraResult res = new();
+
+            res.fisher = fisher;
+            res.epsilonY = epsilonY;
+            res.epsilonSquared = epsilonSquared;
+            res.rSquared = rSquared;
+            res.avgSquaredShift = avgSquaredShift;
+            res.avgApproximation = avgApproximation;
+            res.elastics = elastics;
+            res.studentCriterias = studentCriterias;
+            res.unshiftedDispersion = unshiftedDispersion;
+            res.paramsDispersion = paramsDispersion;
+
+            return res;
+        }
+
+        private double calcRLower()
+        {
+            double res = 0;
+            double avgY = this._mathHelper.getAverageValue(this._y);
+
+            for (int i = 0; i < this._y.Count; i++)
+            {
+                res += Math.Pow(this._y[i] - avgY, 2);
+            }
+
+            return res;
+        }
+
+        public double calcYPredict(List<double> x) //расчитать значение по уравнению регрессии
+        {
+            double res = this.finalKoefs[0];
+
+            for (int i = 0; i < x.Count; i++)
+            {
+                res += x[i] * this.finalKoefs[i + 1];
+            }
+
+            return res;
+        }
 
         private double calculateR(List<double> x, List<double> y) => (this._mathHelper.getSumListsMultiplied(x, y) - (this._mathHelper.getSumValue(x) * this._mathHelper.getSumValue(y) / x.Count)) / Math.Sqrt((this._mathHelper.getSumSquared(x) - (Math.Pow(this._mathHelper.getSumValue(x), 2)) / x.Count) * (this._mathHelper.getSumSquared(y) - (Math.Pow(this._mathHelper.getSumValue(y), 2)) / x.Count));
+    
+        private double calculatePairCorrelations(List<double> x, List<double> y)
+        {    
+            double upper = 0;
+            for (int i = 0; i < x.Count; i++)
+            {
+                upper += (x[i] - this._mathHelper.getAverageValue(x)) * (y[i] - this._mathHelper.getAverageValue(y));
+            }
 
-        private double calculateSigmaY(List<double> y) => (this._mathHelper.getSumSquared(y) / y.Count) - Math.Pow((this._mathHelper.getSumValue(y) / y.Count), 2);
+            double lowerFirst = 0;
+            for (int i = 0; i < x.Count; i++)
+            {
+                lowerFirst += Math.Pow(x[i] - this._mathHelper.getAverageValue(x), 2);
+            }
+            double lowerSecond = 0;
+            for (int i = 0; i < x.Count; i++)
+            {
+                lowerSecond += Math.Pow(y[i] - this._mathHelper.getAverageValue(y), 2);
+            }
+            double lower = Math.Sqrt(lowerFirst * lowerSecond);
 
-        private double calculateSigmaYX(List<double> x, List<double> y) => this.sigmaY - (this._mathHelper.getSquaredDifference(x, y, this.countA0, this.countA1) / x.Count);
-
-        private double calculateRBig(List<double> x, List<double> y) => Math.Sqrt(1 - (this._mathHelper.getSquaredDifference(x, y, this.countA0, this.countA1) / x.Count) / this.sigmaY);
+            return upper / lower;
+        }
     }
 }
