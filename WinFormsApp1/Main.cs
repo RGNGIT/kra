@@ -8,9 +8,17 @@ namespace WinFormsApp1
         {
             InitializeComponent();
             labelDebug.Text = UserStore.role;
-            if (UserStore.role == "operator")
+            switch(UserStore.role)
             {
-                tabControl1.TabPages[2].Parent = null;
+                case "operator":
+                    tabControl1.TabPages[2].Parent = null;
+                    break;
+                case "rukovoditel":
+                    // Все вкладки (кроме введения?)
+                    break;
+                case "admin":
+                    // Все вкладки
+                    break;
             }
             this.toggleLabels(false);
             dataGridView3.Rows.Add(-12, 2500, 2450, 50000, 5, 200);

@@ -39,6 +39,7 @@
             this.button1 = new System.Windows.Forms.Button();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.labelDebug = new System.Windows.Forms.Label();
             this.cuOtherResults = new System.Windows.Forms.Label();
             this.alOtherResults = new System.Windows.Forms.Label();
             this.label15 = new System.Windows.Forms.Label();
@@ -118,7 +119,6 @@
             this.label9 = new System.Windows.Forms.Label();
             this.tabPage4 = new System.Windows.Forms.TabPage();
             this.tabPage3 = new System.Windows.Forms.TabPage();
-            this.labelDebug = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pairCuGrid)).BeginInit();
@@ -203,6 +203,15 @@
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Прогнозирование";
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // labelDebug
+            // 
+            this.labelDebug.AutoSize = true;
+            this.labelDebug.Location = new System.Drawing.Point(3, 3);
+            this.labelDebug.Name = "labelDebug";
+            this.labelDebug.Size = new System.Drawing.Size(44, 15);
+            this.labelDebug.TabIndex = 54;
+            this.labelDebug.Text = "label18";
             // 
             // cuOtherResults
             // 
@@ -878,15 +887,6 @@
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Справка";
             this.tabPage3.UseVisualStyleBackColor = true;
-            // 
-            // labelDebug
-            // 
-            this.labelDebug.AutoSize = true;
-            this.labelDebug.Location = new System.Drawing.Point(586, 605);
-            this.labelDebug.Name = "labelDebug";
-            this.labelDebug.Size = new System.Drawing.Size(44, 15);
-            this.labelDebug.TabIndex = 54;
-            this.labelDebug.Text = "label18";
             // 
             // Main
             // 
