@@ -1,21 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Reflection.Emit;
-using System.Security.Cryptography;
+﻿using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace WinFormsApp1
 {
-    public partial class Form2 : Form
+    public partial class Auth : Form
     {
-        string[] login = { "dima", "123", "operator" };
+        string[] login = { "admin", "rukovoditel", "operator" };
         string[] pass = { "123", "123", "123" };
         int N;
         string hash1;
@@ -24,8 +14,8 @@ namespace WinFormsApp1
         int num;
         int numtrans = 1;
         int counttrans = 10;
-        string role = "";
-        public Form2()
+
+        public Auth()
         {
             InitializeComponent();
         }
@@ -47,16 +37,13 @@ namespace WinFormsApp1
         {
             bool flag = false;
             id = 0;
-            foreach (string log in login)
+            for(int i = 0; i < login.Length; i++)
             {
-                if (textBox2.Text == log)
+                if(textBoxLogin.Text == login[i] && textBoxPassword.Text == pass[i])
                 {
                     flag = true;
-                    break;
+                    id = i;
                 }
-                id++;
-
-
             }
             if (flag == true)
             {
@@ -73,10 +60,7 @@ namespace WinFormsApp1
             }
             else { MessageBox.Show("Ошибка аутентификации: неверный логин или пароль"); }
             flag = false;
-
-            if (textBox2.Text == "admin")
-                UserStore.role = "operator";
-            else UserStore.role = "rukovoditel";
+            UserStore.role = textBoxLogin.Text;
         }
 
         int counter = 0;
@@ -95,7 +79,7 @@ namespace WinFormsApp1
                         label8.Visible = true;
                         // label9.Text = SHA(N+textBox1.Text);
                         label9.Visible = true;
-                        string NP = N + textBox1.Text;
+                        string NP = N + textBoxPassword.Text;
                         hash1 = SHA(NP);
                         textBox3.Text = hash1;
                         textBox3.Visible = true;
@@ -108,14 +92,14 @@ namespace WinFormsApp1
                         label5.Text = "Ответ: Генерация своего хеш-пароля Hash(N,P1). Проверка совпадения Hash(N,P) и Hash(N,P1)";
                         label6.Text = "Запрос: Подтверждение аутентификации";
                         label10.Visible = true;
-                        textBox4.Text = hash1;
-                        textBox4.Visible = true;
+                        textBoxhash1.Text = hash1;
+                        textBoxhash1.Visible = true;
 
                         string NP1 = N + pass[id];
                         hash2 = SHA(NP1);
                         label11.Visible = true;
-                        textBox5.Text = hash2;
-                        textBox5.Visible = true;
+                        textBoxhash2.Text = hash2;
+                        textBoxhash2.Visible = true;
                         counter++;
                         break;
                     }
@@ -126,7 +110,7 @@ namespace WinFormsApp1
                             label5.Text = "Ответ: Аутентификация пройдена";
                             label6.Text = "Запрос: Подтверждение аутентификации";
                             MessageBox.Show("Аутентификация успешна");
-                            Form1 form1 = new Form1();
+                            Main form1 = new Main();
                             form1.Show();
                             Close();
                         }
@@ -150,6 +134,10 @@ namespace WinFormsApp1
         {
             bool flag = false;
             num = 0;
+            for(int i = 0; i < login.Length; i++)
+            {
+                
+            }
             foreach (string log in login)
             {
                 if (textBox6.Text == log)

@@ -1,6 +1,6 @@
 ﻿namespace WinFormsApp1
 {
-    partial class Form1
+    partial class Main
     {
         /// <summary>
         ///  Required designer variable.
@@ -39,6 +39,7 @@
             this.button1 = new System.Windows.Forms.Button();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.cuOtherResults = new System.Windows.Forms.Label();
             this.alOtherResults = new System.Windows.Forms.Label();
             this.label15 = new System.Windows.Forms.Label();
             this.label16 = new System.Windows.Forms.Label();
@@ -117,7 +118,7 @@
             this.label9 = new System.Windows.Forms.Label();
             this.tabPage4 = new System.Windows.Forms.TabPage();
             this.tabPage3 = new System.Windows.Forms.TabPage();
-            this.cuOtherResults = new System.Windows.Forms.Label();
+            this.labelDebug = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pairCuGrid)).BeginInit();
@@ -156,6 +157,7 @@
             // tabPage1
             // 
             this.tabPage1.AutoScroll = true;
+            this.tabPage1.Controls.Add(this.labelDebug);
             this.tabPage1.Controls.Add(this.cuOtherResults);
             this.tabPage1.Controls.Add(this.alOtherResults);
             this.tabPage1.Controls.Add(this.label15);
@@ -201,6 +203,15 @@
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Прогнозирование";
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // cuOtherResults
+            // 
+            this.cuOtherResults.AutoSize = true;
+            this.cuOtherResults.Location = new System.Drawing.Point(361, 1687);
+            this.cuOtherResults.Name = "cuOtherResults";
+            this.cuOtherResults.Size = new System.Drawing.Size(118, 15);
+            this.cuOtherResults.TabIndex = 53;
+            this.cuOtherResults.Text = "Прочие результаты:";
             // 
             // alOtherResults
             // 
@@ -868,22 +879,22 @@
             this.tabPage3.Text = "Справка";
             this.tabPage3.UseVisualStyleBackColor = true;
             // 
-            // cuOtherResults
+            // labelDebug
             // 
-            this.cuOtherResults.AutoSize = true;
-            this.cuOtherResults.Location = new System.Drawing.Point(361, 1687);
-            this.cuOtherResults.Name = "cuOtherResults";
-            this.cuOtherResults.Size = new System.Drawing.Size(118, 15);
-            this.cuOtherResults.TabIndex = 53;
-            this.cuOtherResults.Text = "Прочие результаты:";
+            this.labelDebug.AutoSize = true;
+            this.labelDebug.Location = new System.Drawing.Point(586, 605);
+            this.labelDebug.Name = "labelDebug";
+            this.labelDebug.Size = new System.Drawing.Size(44, 15);
+            this.labelDebug.TabIndex = 54;
+            this.labelDebug.Text = "label18";
             // 
-            // Form1
+            // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(936, 772);
             this.Controls.Add(this.tabControl1);
-            this.Name = "Form1";
+            this.Name = "Main";
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.tabControl1.ResumeLayout(false);
@@ -987,5 +998,6 @@
         private TextBox cuTb1;
         private Label alOtherResults;
         private Label cuOtherResults;
+        private Label labelDebug;
     }
 }
