@@ -5,8 +5,9 @@ namespace WinFormsApp1
 {
     public partial class Auth : Form
     {
-        string[] login = { "admin", "rukovoditel", "operator" };
+        string[] login = { "zalupa1", "zalupa2", "zalupa3" };
         string[] pass = { "123", "123", "123" };
+        string[] role = { "admin", "rukovoditel", "operator" };
         int N;
         string hash1;
         string hash2;
@@ -15,9 +16,22 @@ namespace WinFormsApp1
         int numtrans = 1;
         int counttrans = 10;
 
+        int ResolveIndex(string value, string[] array)
+        {
+            for (int i = 0; i < array.Length; i++)
+            {
+                if (array[i] == value)
+                {
+                    return i;
+                }
+            }
+            return -1;
+        }
+
         public Auth()
         {
             InitializeComponent();
+            tabControl2.TabPages[1].Parent = null;
         }
 
         private void Form2_Load(object sender, EventArgs e)
@@ -37,9 +51,9 @@ namespace WinFormsApp1
         {
             bool flag = false;
             id = 0;
-            for(int i = 0; i < login.Length; i++)
+            for (int i = 0; i < login.Length; i++)
             {
-                if(textBoxLogin.Text == login[i] && textBoxPassword.Text == pass[i])
+                if (textBoxLogin.Text == login[i] && textBoxPassword.Text == pass[i])
                 {
                     flag = true;
                     id = i;
@@ -56,16 +70,20 @@ namespace WinFormsApp1
                 label7.Text = $"N = {N}";
                 label7.Visible = true;
 
-                label23.Visible = true;
+                // label23.Visible = true;
+                UserStore.role = role[ResolveIndex(textBoxLogin.Text, login)];
+                for (int i = 0; i < 3; i++)
+                {
+                    Validation();
+                }
             }
             else { MessageBox.Show("Ошибка аутентификации: неверный логин или пароль"); }
             flag = false;
-            UserStore.role = textBoxLogin.Text;
         }
 
         int counter = 0;
 
-        private void button2_Click(object sender, EventArgs e)
+        void Validation()
         {
             // string hash1=String.Empty;
             // string hash2=String.Empty; 
@@ -124,6 +142,11 @@ namespace WinFormsApp1
                     }
             }
         }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            Validation();
+        }
         public static string SHA(string input)
         {
             SHA256 hash = SHA256.Create();
@@ -134,9 +157,9 @@ namespace WinFormsApp1
         {
             bool flag = false;
             num = 0;
-            for(int i = 0; i < login.Length; i++)
+            for (int i = 0; i < login.Length; i++)
             {
-                
+
             }
             foreach (string log in login)
             {
