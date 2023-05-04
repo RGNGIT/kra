@@ -37,6 +37,8 @@
             tabPage5 = new TabPage();
             tabControlDataworks = new TabControl();
             tabPage111 = new TabPage();
+            textBoxMonth = new TextBox();
+            label26 = new Label();
             buttonAddFact = new Button();
             comboBoxFactProduct = new ComboBox();
             label24 = new Label();
@@ -128,6 +130,7 @@
             labelStatTemp = new Label();
             labelStatValue = new Label();
             dataGridViewStats = new DataGridView();
+            Column13 = new DataGridViewTextBoxColumn();
             Column7 = new DataGridViewTextBoxColumn();
             Column10 = new DataGridViewTextBoxColumn();
             Column11 = new DataGridViewTextBoxColumn();
@@ -207,6 +210,8 @@
             // 
             // tabPage111
             // 
+            tabPage111.Controls.Add(textBoxMonth);
+            tabPage111.Controls.Add(label26);
             tabPage111.Controls.Add(buttonAddFact);
             tabPage111.Controls.Add(comboBoxFactProduct);
             tabPage111.Controls.Add(label24);
@@ -231,6 +236,22 @@
             tabPage111.Text = "Факт выпуска";
             tabPage111.UseVisualStyleBackColor = true;
             // 
+            // textBoxMonth
+            // 
+            textBoxMonth.Location = new Point(6, 295);
+            textBoxMonth.Name = "textBoxMonth";
+            textBoxMonth.Size = new Size(233, 23);
+            textBoxMonth.TabIndex = 16;
+            // 
+            // label26
+            // 
+            label26.AutoSize = true;
+            label26.Location = new Point(6, 277);
+            label26.Name = "label26";
+            label26.Size = new Size(88, 15);
+            label26.TabIndex = 15;
+            label26.Text = "Номер месяца";
+            // 
             // buttonAddFact
             // 
             buttonAddFact.Location = new Point(6, 658);
@@ -245,7 +266,7 @@
             // 
             comboBoxFactProduct.DropDownStyle = ComboBoxStyle.DropDownList;
             comboBoxFactProduct.FormattingEnabled = true;
-            comboBoxFactProduct.Location = new Point(6, 294);
+            comboBoxFactProduct.Location = new Point(6, 341);
             comboBoxFactProduct.Name = "comboBoxFactProduct";
             comboBoxFactProduct.Size = new Size(233, 23);
             comboBoxFactProduct.TabIndex = 14;
@@ -253,7 +274,7 @@
             // label24
             // 
             label24.AutoSize = true;
-            label24.Location = new Point(6, 276);
+            label24.Location = new Point(6, 323);
             label24.Name = "label24";
             label24.Size = new Size(53, 15);
             label24.TabIndex = 13;
@@ -883,6 +904,7 @@
             button2.TabIndex = 5;
             button2.Text = "Найти оптимальную альтернативу";
             button2.UseVisualStyleBackColor = true;
+            button2.Click += button2_Click_1;
             // 
             // dataGridView2
             // 
@@ -1042,12 +1064,17 @@
             // dataGridViewStats
             // 
             dataGridViewStats.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewStats.Columns.AddRange(new DataGridViewColumn[] { Column7, Column10, Column11, Column12, Column8, Column9 });
+            dataGridViewStats.Columns.AddRange(new DataGridViewColumn[] { Column13, Column7, Column10, Column11, Column12, Column8, Column9 });
             dataGridViewStats.Location = new Point(3, 51);
             dataGridViewStats.Name = "dataGridViewStats";
             dataGridViewStats.RowTemplate.Height = 25;
             dataGridViewStats.Size = new Size(909, 580);
             dataGridViewStats.TabIndex = 2;
+            // 
+            // Column13
+            // 
+            Column13.HeaderText = "Месяц";
+            Column13.Name = "Column13";
             // 
             // Column7
             // 
@@ -1285,6 +1312,9 @@
         private Label labelStatPrice;
         private Label labelStatTemp;
         private Label labelStatProdName;
+        private TextBox textBoxMonth;
+        private Label label26;
+        private DataGridViewTextBoxColumn Column13;
         private DataGridViewTextBoxColumn Column7;
         private DataGridViewTextBoxColumn Column10;
         private DataGridViewTextBoxColumn Column11;

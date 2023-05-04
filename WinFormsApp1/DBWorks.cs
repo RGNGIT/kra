@@ -24,13 +24,13 @@ namespace WinFormsApp1
             return dataSet.Tables[0].DefaultView;
         }
 
-        public string InsertFact(string temperature, string price, string concPrice, string adPrice, string discount, string soldAmount, string productKey)
+        public string InsertFact(string temperature, string price, string concPrice, string adPrice, string discount, string soldAmount, string productKey, string month)
         {
             try
             {
                 SqlCommand command = new SqlCommand(
-                    $"INSERT INTO [VKR].[dbo].[Факт_выпуска] ([темп_окр_среды], [цена], [цена_конкурентов], [цена_на_рекламу], [скидка], [количество_проданных], [код_выпускаемой_продукции]) " +
-                    $"VALUES ('{temperature}', '{price}', '{concPrice}', '{adPrice}', '{discount}', '{soldAmount}', '{productKey}');", 
+                    $"INSERT INTO [VKR].[dbo].[Факт_выпуска] ([темп_окр_среды], [цена], [цена_конкурентов], [цена_на_рекламу], [скидка], [количество_проданных], [код_выпускаемой_продукции], [месяц]) " +
+                    $"VALUES ('{temperature}', '{price}', '{concPrice}', '{adPrice}', '{discount}', '{soldAmount}', '{productKey}', '{month}');", 
                     connection
                 );
                 command.ExecuteNonQuery();

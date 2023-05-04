@@ -355,7 +355,7 @@ namespace WinFormsApp1
             string temp = "";
             for (int i = 0; i < grid.Rows.Count - 1; i++)
             {
-                temp += grid.Rows[i].Cells[6].Value.ToString() + (i != grid.Rows.Count - 2 ? ',' : "");
+                temp += grid.Rows[i].Cells[7].Value.ToString() + (i != grid.Rows.Count - 2 ? ',' : "");
             }
             return temp;
         }
@@ -395,17 +395,25 @@ namespace WinFormsApp1
             DBWorks works1 = new DBWorks(connection);
             // Аллюм
             dataGridViewFactAlum.DataSource = works1.ReturnTable(
-                "c.[темп_окр_среды] AS 'Температура окружающей среды', c.[цена] AS 'Цена', c.[цена_конкурентов] AS 'Цена конкурентов', c.[цена_на_рекламу] AS 'Цена на рекламу', c.[скидка] AS 'Скидка', c.[количество_проданных] AS 'Количество выпущенных', c.[номер_факта_выпуска] ",
+                "c.[темп_окр_среды] AS 'Температура окружающей среды', c.[цена] AS 'Цена', c.[цена_конкурентов] AS 'Цена конкурентов', c.[цена_на_рекламу] AS 'Цена на рекламу', c.[скидка] AS 'Скидка', c.[количество_проданных] AS 'Количество выпущенных', c.[месяц], c.[номер_факта_выпуска] ",
                 "[VKR].[dbo].[Выпускаемая_продукция] AS a, [VKR].[dbo].[Вид_выпускаемой_продукции] AS b, [VKR].[dbo].[Факт_выпуска] AS c",
                 "WHERE a.[код_вида] = b.[код_вида] AND c.[код_выпускаемой_продукции] = a.[номер_выпускаемой_продукции] AND b.[код_вида] = 9;"
             );
             DBWorks works2 = new DBWorks(connection);
             // Медь
             dataGridViewFactCopper.DataSource = works2.ReturnTable(
-                "c.[темп_окр_среды] AS 'Температура окружающей среды', c.[цена] AS 'Цена', c.[цена_конкурентов] AS 'Цена конкурентов', c.[цена_на_рекламу] AS 'Цена на рекламу', c.[скидка] AS 'Скидка', c.[количество_проданных] AS 'Количество выпущенных', c.[номер_факта_выпуска] ",
+                "c.[темп_окр_среды] AS 'Температура окружающей среды', c.[цена] AS 'Цена', c.[цена_конкурентов] AS 'Цена конкурентов', c.[цена_на_рекламу] AS 'Цена на рекламу', c.[скидка] AS 'Скидка', c.[количество_проданных] AS 'Количество выпущенных', c.[месяц], c.[номер_факта_выпуска] ",
                 "[VKR].[dbo].[Выпускаемая_продукция] AS a, [VKR].[dbo].[Вид_выпускаемой_продукции] AS b, [VKR].[dbo].[Факт_выпуска] AS c",
                 "WHERE a.[код_вида] = b.[код_вида] AND c.[код_выпускаемой_продукции] = a.[номер_выпускаемой_продукции] AND b.[код_вида] = 8;"
             );
+            for (int i = 0; i < dataGridViewFactAlum.Rows.Count - 1; i++)
+            {
+                dataGridViewFactAlum.Rows[i].Cells[6].Value = Month[int.Parse(dataGridViewFactAlum.Rows[i].Cells[6].Value.ToString()!)];
+            }
+            for (int i = 0; i < dataGridViewFactCopper.Rows.Count - 1; i++)
+            {
+                dataGridViewFactCopper.Rows[i].Cells[6].Value = Month[int.Parse(dataGridViewFactCopper.Rows[i].Cells[6].Value.ToString()!)];
+            }
         }
 
         void SetBufferCombo()
@@ -461,7 +469,7 @@ namespace WinFormsApp1
                 {
                     case 0:
                         dataGridViewFact.DataSource = works1.ReturnTable(
-                            "a.[темп_окр_среды], a.[цена], a.[цена_конкурентов], a.[цена_на_рекламу], a.[скидка], a.[количество_проданных], " +
+                            "a.[месяц], a.[темп_окр_среды], a.[цена], a.[цена_конкурентов], a.[цена_на_рекламу], a.[скидка], a.[количество_проданных], " +
                             "b.[наименование_выпускаемой_продукции]",
                             "[VKR].[dbo].[Факт_выпуска] AS a, [VKR].[dbo].[Выпускаемая_продукция] AS b",
                             "WHERE a.[код_выпускаемой_продукции] = b.[номер_выпускаемой_продукции];"
@@ -502,11 +510,28 @@ namespace WinFormsApp1
                 textBoxFactAdPrice.Text,
                 textBoxFactDiscount.Text,
                 textBoxFactAmountSold.Text,
-                dataGridViewBuffer.Rows[comboBoxFactProduct.SelectedIndex].Cells[0].Value.ToString()!
+                dataGridViewBuffer.Rows[comboBoxFactProduct.SelectedIndex].Cells[0].Value.ToString()!,
+                textBoxMonth.Text
             );
             UpdateProductionCombo();
             RefreshAll();
         }
+
+        Dictionary<int, string> Month = new Dictionary<int, string>()
+        {
+            { 1, "Январь" },
+            { 2, "Февраль" },
+            { 3, "Март" },
+            { 4, "Апрель" },
+            { 5, "Май" },
+            { 6, "Июнь" },
+            { 7, "Июль" },
+            { 8, "Август" },
+            { 9, "Сентябрь" },
+            { 10, "Октябрь" },
+            { 11, "Ноябрь" },
+            { 12, "Декабрь" }
+        };
 
         private void comboBoxPrognozes_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -541,6 +566,7 @@ namespace WinFormsApp1
                 DBWorks works4 = new DBWorks(connection);
                 dataGridViewBuffer.DataSource = works4.ReturnTable("*", "[VKR].[dbo].[Факт_выпуска] AS a", $"WHERE a.[номер_факта_выпуска] = {factId};");
                 dataGridViewStats.Rows.Add(
+                    Month[int.Parse(dataGridViewBuffer.Rows[0].Cells[0].Value.ToString()!)],
                     dataGridViewBuffer.Rows[0].Cells[1].Value,
                     dataGridViewBuffer.Rows[0].Cells[2].Value,
                     dataGridViewBuffer.Rows[0].Cells[3].Value,
@@ -549,6 +575,11 @@ namespace WinFormsApp1
                     dataGridViewBuffer.Rows[0].Cells[6].Value
                 );
             }
+        }
+
+        private void button2_Click_1(object sender, EventArgs e)
+        {
+
         }
     }
 }
