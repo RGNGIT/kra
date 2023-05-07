@@ -15,10 +15,12 @@ namespace WinFormsApp1
             switch (UserStore.role)
             {
                 case "operator":
-                    tabControMain.TabPages[2].Parent = null;
+                    tabControMain.TabPages["tabPage4"].Parent = null;
                     break;
                 case "rukovoditel":
-                    // Все вкладки (кроме введения?)
+                    tabControMain.TabPages["tabPage5"].Parent = null;
+                    tabControMain.TabPages["tabPage1"].Parent = null;
+                    tabControMain.TabPages["tabPage2"].Parent = null;
                     break;
                 case "admin":
                     // Все вкладки
@@ -340,14 +342,14 @@ namespace WinFormsApp1
             //}
         }
 
-        void PostPrognoz(string value, string factTuple, string planTemperature, string planPrice, string planConcPrice, string planAdPrice, string planDiscount, string productId)
+        void PostPrognoz(string value, string factTuple, string planTemperature, string planPrice, string planConcPrice, string planAdPrice, string planDiscount, string productId, string branchId)
         {
             DBWorks works1 = new DBWorks(connection);
             works1.InsertPlan(planTemperature, planPrice, planConcPrice, planAdPrice, planDiscount, productId);
             DBWorks works2 = new DBWorks(connection);
             dataGridViewBuffer.DataSource = works2.ReturnTable("[номер_плана]", "[VKR].[dbo].[План_выпуска]", null);
             DBWorks works3 = new DBWorks(connection);
-            works3.InsertPrognoz(value, factTuple, dataGridViewBuffer.Rows[dataGridViewBuffer.Rows.Count - 2].Cells[0].Value.ToString()!);
+            works3.InsertPrognoz(value, factTuple, dataGridViewBuffer.Rows[dataGridViewBuffer.Rows.Count - 2].Cells[0].Value.ToString()!, branchId);
         }
 
         string ResolveTuple(DataGridView grid)
@@ -360,51 +362,82 @@ namespace WinFormsApp1
             return temp;
         }
 
+        int FetchBranch(string plantId)
+        {
+            try
+            {
+                DBWorks works = new DBWorks(connection);
+                dataGridViewBuffer.DataSource = works.ReturnTable("*", "[VKR].[dbo].[Отдел] AS a", $"WHERE a.[код_предприятия] = {plantId};");
+                return dataGridViewBuffer.Rows.Count > 1 ? int.Parse(dataGridViewBuffer.Rows[0].Cells[0].Value.ToString()!) : -1;
+            }
+            catch
+            {
+                return -1;
+            }
+        }
+
         private void button3_Click(object sender, EventArgs e)
         {
-            double result = kraAl.calcYPredict(
-                new List<double>() {
+            int branchId = FetchBranch(comboBoxPrognozPlant.Text.Split(' ')[0]);
+            if (branchId != -1)
+            {
+                double result = kraAl.calcYPredict(
+                    new List<double>() {
                     Convert.ToDouble(alTb1.Text),
                     Convert.ToDouble(alTb2.Text),
                     Convert.ToDouble(alTb3.Text),
                     Convert.ToDouble(alTb4.Text),
                     Convert.ToDouble(alTb5.Text)
-                }
-            );
-            label13.Text += result;
-            PostPrognoz(result.ToString(), ResolveTuple(dataGridViewFactAlum), alTb1.Text, alTb2.Text, alTb3.Text, alTb4.Text, alTb5.Text, "5");
+                    }
+                );
+                DBWorks works = new DBWorks(connection);
+                label13.Text += result;
+                PostPrognoz(result.ToString(), ResolveTuple(dataGridViewFactAlum), alTb1.Text, alTb2.Text, alTb3.Text, alTb4.Text, alTb5.Text, "5", branchId.ToString());
+            }
+            else
+            {
+                MessageBox.Show("У данного предприятия не найден отдел!");
+            }
         }
 
         private void button4_Click(object sender, EventArgs e)
         {
-            double result = kraCu.calcYPredict(
-                new List<double>() {
+            int branchId = FetchBranch(comboBoxPrognozPlant.Text.Split(' ')[0]);
+            if (branchId != -1)
+            {
+                double result = kraCu.calcYPredict(
+                    new List<double>() {
                     Convert.ToDouble(cuTb1.Text),
                     Convert.ToDouble(cuTb2.Text),
                     Convert.ToDouble(cuTb3.Text),
                     Convert.ToDouble(cuTb4.Text),
                     Convert.ToDouble(cuTb5.Text)
-                }
-            );
-            label14.Text += result;
-            PostPrognoz(result.ToString(), ResolveTuple(dataGridViewFactCopper), cuTb1.Text, cuTb2.Text, cuTb3.Text, cuTb4.Text, cuTb5.Text, "1");
+                    }
+                );
+                label14.Text += result;
+                PostPrognoz(result.ToString(), ResolveTuple(dataGridViewFactCopper), cuTb1.Text, cuTb2.Text, cuTb3.Text, cuTb4.Text, cuTb5.Text, "1", branchId.ToString());
+            }
+            else
+            {
+                MessageBox.Show("У данного предприятия не найден отдел!");
+            }
         }
 
-        void SetProductionFacts()
+        void SetProductionFacts(string plantId)
         {
             DBWorks works1 = new DBWorks(connection);
             // Аллюм
             dataGridViewFactAlum.DataSource = works1.ReturnTable(
                 "c.[темп_окр_среды] AS 'Температура окружающей среды', c.[цена] AS 'Цена', c.[цена_конкурентов] AS 'Цена конкурентов', c.[цена_на_рекламу] AS 'Цена на рекламу', c.[скидка] AS 'Скидка', c.[количество_проданных] AS 'Количество выпущенных', c.[месяц], c.[номер_факта_выпуска] ",
                 "[VKR].[dbo].[Выпускаемая_продукция] AS a, [VKR].[dbo].[Вид_выпускаемой_продукции] AS b, [VKR].[dbo].[Факт_выпуска] AS c",
-                "WHERE a.[код_вида] = b.[код_вида] AND c.[код_выпускаемой_продукции] = a.[номер_выпускаемой_продукции] AND b.[код_вида] = 9;"
+                $"WHERE a.[код_вида] = b.[код_вида] AND c.[код_выпускаемой_продукции] = a.[номер_выпускаемой_продукции] AND b.[код_вида] = 9 AND c.[код_предприятия] = {plantId};"
             );
             DBWorks works2 = new DBWorks(connection);
             // Медь
             dataGridViewFactCopper.DataSource = works2.ReturnTable(
                 "c.[темп_окр_среды] AS 'Температура окружающей среды', c.[цена] AS 'Цена', c.[цена_конкурентов] AS 'Цена конкурентов', c.[цена_на_рекламу] AS 'Цена на рекламу', c.[скидка] AS 'Скидка', c.[количество_проданных] AS 'Количество выпущенных', c.[месяц], c.[номер_факта_выпуска] ",
                 "[VKR].[dbo].[Выпускаемая_продукция] AS a, [VKR].[dbo].[Вид_выпускаемой_продукции] AS b, [VKR].[dbo].[Факт_выпуска] AS c",
-                "WHERE a.[код_вида] = b.[код_вида] AND c.[код_выпускаемой_продукции] = a.[номер_выпускаемой_продукции] AND b.[код_вида] = 8;"
+                $"WHERE a.[код_вида] = b.[код_вида] AND c.[код_выпускаемой_продукции] = a.[номер_выпускаемой_продукции] AND b.[код_вида] = 8 AND c.[код_предприятия] = {plantId};"
             );
             for (int i = 0; i < dataGridViewFactAlum.Rows.Count - 1; i++)
             {
@@ -445,7 +478,7 @@ namespace WinFormsApp1
         {
             comboBoxPrognozes.Items.Clear();
             DBWorks works = new DBWorks(connection);
-            dataGridViewBuffer.DataSource = works.ReturnTable("[код_прогноза], [значение], [кортеж_фактов], [код_плана]", "[VKR].[dbo].[Прогноз]", null);
+            dataGridViewBuffer.DataSource = works.ReturnTable("[код_прогноза], [значение], [список_фактов], [код_плана]", "[VKR].[dbo].[Прогноз]", $"WHERE [VKR].[dbo].[Прогноз].[код_отдела] = {comboBoxStatBranch.Text.Split(' ')[0]};");
             for (int i = 0; i < dataGridViewBuffer.Rows.Count - 1; i++)
             {
                 comboBoxPrognozes.Items.Add($"Прогноз {dataGridViewBuffer.Rows[i].Cells[0].Value}");
@@ -459,28 +492,64 @@ namespace WinFormsApp1
                 .ToArray());
         }
 
+        void UpdateComboPlant()
+        {
+            comboBoxPlant.Items.Clear();
+            comboBoxBranchPlant.Items.Clear();
+            DBWorks works = new DBWorks(connection);
+            dataGridViewBuffer.DataSource = works.ReturnTable("*", "[VKR].[dbo].[Предприятие]", null);
+            for (int i = 0; i < dataGridViewBuffer.Rows.Count - 1; i++)
+            {
+                comboBoxPlant.Items.Add($"{dataGridViewBuffer.Rows[i].Cells[0].Value} {dataGridViewBuffer.Rows[i].Cells[1].Value}");
+                comboBoxBranchPlant.Items.Add($"{dataGridViewBuffer.Rows[i].Cells[0].Value} {dataGridViewBuffer.Rows[i].Cells[1].Value}");
+            }
+        }
+
+        void UpdateComboPrognozPlant()
+        {
+            comboBoxPrognozPlant.Items.Clear();
+            DBWorks works = new DBWorks(connection);
+            dataGridViewBuffer.DataSource = works.ReturnTable("*", "[VKR].[dbo].[Предприятие]", null);
+            for (int i = 0; i < dataGridViewBuffer.Rows.Count - 1; i++)
+            {
+                comboBoxPrognozPlant.Items.Add($"{dataGridViewBuffer.Rows[i].Cells[0].Value} {dataGridViewBuffer.Rows[i].Cells[1].Value}");
+            }
+        }
+
         void RefreshAll()
         {
-            DBWorks works1 = new DBWorks(connection);
-            UpdateProductionCombo();
+
             if (tabControMain.SelectedIndex == 0)
             {
                 switch (tabControlDataworks.SelectedIndex)
                 {
                     case 0:
+                        UpdateComboPlant();
+                        UpdateProductionCombo();
+                        DBWorks works1 = new DBWorks(connection);
                         dataGridViewFact.DataSource = works1.ReturnTable(
                             "a.[месяц], a.[темп_окр_среды], a.[цена], a.[цена_конкурентов], a.[цена_на_рекламу], a.[скидка], a.[количество_проданных], " +
-                            "b.[наименование_выпускаемой_продукции]",
-                            "[VKR].[dbo].[Факт_выпуска] AS a, [VKR].[dbo].[Выпускаемая_продукция] AS b",
-                            "WHERE a.[код_выпускаемой_продукции] = b.[номер_выпускаемой_продукции];"
+                            "b.[наименование_выпускаемой_продукции], c.[название] AS 'Завод'",
+                            "[VKR].[dbo].[Факт_выпуска] AS a, [VKR].[dbo].[Выпускаемая_продукция] AS b, [VKR].[dbo].[Предприятие] AS c ",
+                            "WHERE a.[код_выпускаемой_продукции] = b.[номер_выпускаемой_продукции] AND a.[код_предприятия] = c.[код_предприятия];"
                         );
+                        break;
+                    case 1:
+                        DBWorks works3 = new DBWorks(connection);
+                        dataGridViewPlant.DataSource = works3.ReturnTable("*", "[VKR].[dbo].[Предприятие]", null);
+                        break;
+                    case 2:
+                        UpdateComboPlant();
+                        DBWorks works4 = new DBWorks(connection);
+                        dataGridViewBranch.DataSource = works4.ReturnTable("a.[наименование], b.[название]", "[VKR].[dbo].[Отдел] AS a, [VKR].[dbo].[Предприятие] AS b", "WHERE a.[код_отдела] = b.[код_предприятия];");
                         break;
                 }
             }
             DBWorks works2 = new DBWorks(connection);
             if (tabControMain.SelectedIndex == 1)
             {
-                SetProductionFacts();
+                // SetProductionFacts();
+                UpdateComboPrognozPlant();
                 dataGridViewBuffer.DataSource = works2.ReturnTable(
                     "a.[темп_окр_среды], a.[цена], a.[цена_конкурентов], a.[цена_на_рекламу], a.[скидка], a.[количество_проданных], " +
                     "c.[наименование_вида]",
@@ -488,9 +557,28 @@ namespace WinFormsApp1
                     "WHERE a.[код_выпускаемой_продукции] = b.[номер_выпускаемой_продукции] AND b.[код_вида] = c.[код_вида];"
                 );
             }
-            if (tabControMain.SelectedIndex == 3)
+            if (tabControMain.SelectedIndex == 3 || (UserStore.role == "rukovoditel" && tabControMain.SelectedIndex == 1))
             {
-                UpdatePrognozCombo();
+                UpdatePrognozBranchCombo();
+                UpdateAlternativeGrid();
+
+            }
+        }
+
+        void UpdateAlternativeGrid()
+        {
+            DBWorks works = new DBWorks(connection);
+            dataGridViewStatAlternatives.DataSource = works.ReturnTable("[наименование_вида] AS 'Название'", "[VKR].[dbo].[Подбор_оптимальной_альтернативы]", null);
+        }
+
+        void UpdatePrognozBranchCombo()
+        {
+            comboBoxStatBranch.Items.Clear();
+            DBWorks works = new DBWorks(connection);
+            dataGridViewBuffer.DataSource = works.ReturnTable("*", "[VKR].[dbo].[Отдел] AS a", "");
+            for (int i = 0; i < dataGridViewBuffer.Rows.Count - 1; i++)
+            {
+                comboBoxStatBranch.Items.Add($"{dataGridViewBuffer.Rows[i].Cells[0].Value} {dataGridViewBuffer.Rows[i].Cells[1].Value}");
             }
         }
 
@@ -511,7 +599,8 @@ namespace WinFormsApp1
                 textBoxFactDiscount.Text,
                 textBoxFactAmountSold.Text,
                 dataGridViewBuffer.Rows[comboBoxFactProduct.SelectedIndex].Cells[0].Value.ToString()!,
-                textBoxMonth.Text
+                textBoxMonth.Text,
+                comboBoxPlant.Text.Split(' ')[0]
             );
             UpdateProductionCombo();
             RefreshAll();
@@ -566,7 +655,7 @@ namespace WinFormsApp1
                 DBWorks works4 = new DBWorks(connection);
                 dataGridViewBuffer.DataSource = works4.ReturnTable("*", "[VKR].[dbo].[Факт_выпуска] AS a", $"WHERE a.[номер_факта_выпуска] = {factId};");
                 dataGridViewStats.Rows.Add(
-                    Month[int.Parse(dataGridViewBuffer.Rows[0].Cells[0].Value.ToString()!)],
+                    Month[int.Parse(dataGridViewBuffer.Rows[0].Cells[7].Value.ToString()!)],
                     dataGridViewBuffer.Rows[0].Cells[1].Value,
                     dataGridViewBuffer.Rows[0].Cells[2].Value,
                     dataGridViewBuffer.Rows[0].Cells[3].Value,
@@ -577,9 +666,107 @@ namespace WinFormsApp1
             }
         }
 
+        private void tabControlDataworks_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            RefreshAll();
+        }
+
+        private void buttonAddPlant_Click(object sender, EventArgs e)
+        {
+            DBWorks works = new DBWorks(connection);
+            works.InsertPlant(textBoxPlantName.Text);
+            RefreshAll();
+        }
+
+        private void buttonAddBranch_Click(object sender, EventArgs e)
+        {
+            DBWorks works = new DBWorks(connection);
+            works.InsertBranch(textBoxBranchName.Text, comboBoxBranchPlant.Text.Split(' ')[0]);
+            RefreshAll();
+        }
+
+        string StringBuilder(string toBuild)
+        {
+            int firstSpace = -1;
+            string temp = "";
+            for (int i = 0; i < toBuild.Length; i++)
+            {
+                if (toBuild[i] == ' ')
+                {
+                    firstSpace = i;
+                    break;
+                }
+            }
+            for (int i = firstSpace + 1; i < toBuild.Length; i++)
+            {
+                temp += toBuild[i];
+            }
+            return temp;
+        }
+
+        private void comboBoxPrognozPlant_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (comboBoxPrognozPlant.Items.Count > 0)
+            {
+                SetProductionFacts(comboBoxPrognozPlant.Text.Split(' ')[0]);
+                labelPrognozPlantName.Text = $"Объём выпускаемой продукции {StringBuilder(comboBoxPrognozPlant.Text)}";
+            }
+        }
+
+        private void comboBoxStatBranch_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            UpdatePrognozCombo();
+        }
+
+        void CalcAlternatives()
+        {
+            double max = 0;
+            string maxi = "";
+
+            foreach (DataGridViewRow row in this.dataGridView2.Rows)
+            {
+
+                if (Convert.ToString(row.Cells[0].Value) == "")
+                    break;
+                max = Convert.ToDouble(row.Cells[1].Value);
+                for (int i = 2; i < 5; i++)
+                {
+                    if (max < Convert.ToDouble(row.Cells[i].Value))
+                    {
+                        max = Convert.ToDouble(row.Cells[i].Value);
+                    }
+                }
+
+                row.Cells[5].Value = max.ToString();
+            }
+            foreach (DataGridViewRow row in this.dataGridView2.Rows)
+            {
+                if (max < Convert.ToDouble(row.Cells[5].Value))
+                {
+                    max = Convert.ToDouble(row.Cells[5].Value);
+                    maxi = row.Cells[0].Value.ToString()!;
+                    row.Selected = true;
+                }
+            }
+            label12.Text = maxi;
+            label12.Visible = true;
+            label11.Visible = true;
+        }
+
         private void button2_Click_1(object sender, EventArgs e)
         {
+            CalcAlternatives();
+            DBWorks works = new DBWorks(connection);
+            works.InsertAlternative(label12.Text);
+        }
 
+        private void Main_Load(object sender, EventArgs e)
+        {
+            foreach (var line in File.ReadLines("File.txt"))
+            {
+                var array = line.Split();
+                dataGridView2.Rows.Add(array);
+            }
         }
     }
 }

@@ -37,6 +37,8 @@
             tabPage5 = new TabPage();
             tabControlDataworks = new TabControl();
             tabPage111 = new TabPage();
+            label27 = new Label();
+            comboBoxPlant = new ComboBox();
             textBoxMonth = new TextBox();
             label26 = new Label();
             buttonAddFact = new Button();
@@ -55,7 +57,20 @@
             textBoxFactTempOrkSred = new TextBox();
             label18 = new Label();
             dataGridViewFact = new DataGridView();
+            tabPage6 = new TabPage();
+            buttonAddPlant = new Button();
+            textBoxPlantName = new TextBox();
+            label28 = new Label();
+            dataGridViewPlant = new DataGridView();
+            tabPage7 = new TabPage();
+            buttonAddBranch = new Button();
+            label30 = new Label();
+            comboBoxBranchPlant = new ComboBox();
+            textBoxBranchName = new TextBox();
+            label29 = new Label();
+            dataGridViewBranch = new DataGridView();
             tabPage1 = new TabPage();
+            comboBoxPrognozPlant = new ComboBox();
             cuOtherResults = new Label();
             alOtherResults = new Label();
             label15 = new Label();
@@ -103,7 +118,7 @@
             resultLabel = new Label();
             label5 = new Label();
             label3 = new Label();
-            label1 = new Label();
+            labelPrognozPlantName = new Label();
             dataGridViewFactAlum = new DataGridView();
             tabPage2 = new TabPage();
             groupBox1 = new GroupBox();
@@ -122,6 +137,9 @@
             pictureBox1 = new PictureBox();
             label9 = new Label();
             tabPage4 = new TabPage();
+            dataGridViewStatAlternatives = new DataGridView();
+            label1 = new Label();
+            comboBoxStatBranch = new ComboBox();
             labelStatProdName = new Label();
             labelStatsDiscount = new Label();
             labelStatsAdPrice = new Label();
@@ -144,11 +162,16 @@
             dataGridViewBuffer = new DataGridView();
             button5 = new Button();
             label25ddddd = new Label();
+            label31 = new Label();
             tabControMain.SuspendLayout();
             tabPage5.SuspendLayout();
             tabControlDataworks.SuspendLayout();
             tabPage111.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridViewFact).BeginInit();
+            tabPage6.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dataGridViewPlant).BeginInit();
+            tabPage7.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dataGridViewBranch).BeginInit();
             tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pairCuGrid).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dataGridViewFactCopper).BeginInit();
@@ -160,6 +183,7 @@
             ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             tabPage4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dataGridViewStatAlternatives).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dataGridViewStats).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dataGridViewBuffer).BeginInit();
             SuspendLayout();
@@ -202,14 +226,19 @@
             // tabControlDataworks
             // 
             tabControlDataworks.Controls.Add(tabPage111);
+            tabControlDataworks.Controls.Add(tabPage6);
+            tabControlDataworks.Controls.Add(tabPage7);
             tabControlDataworks.Location = new Point(6, 6);
             tabControlDataworks.Name = "tabControlDataworks";
             tabControlDataworks.SelectedIndex = 0;
             tabControlDataworks.Size = new Size(903, 715);
             tabControlDataworks.TabIndex = 2;
+            tabControlDataworks.SelectedIndexChanged += tabControlDataworks_SelectedIndexChanged;
             // 
             // tabPage111
             // 
+            tabPage111.Controls.Add(label27);
+            tabPage111.Controls.Add(comboBoxPlant);
             tabPage111.Controls.Add(textBoxMonth);
             tabPage111.Controls.Add(label26);
             tabPage111.Controls.Add(buttonAddFact);
@@ -235,6 +264,24 @@
             tabPage111.TabIndex = 0;
             tabPage111.Text = "Факт выпуска";
             tabPage111.UseVisualStyleBackColor = true;
+            // 
+            // label27
+            // 
+            label27.AutoSize = true;
+            label27.Location = new Point(6, 321);
+            label27.Name = "label27";
+            label27.Size = new Size(80, 15);
+            label27.TabIndex = 18;
+            label27.Text = "Предприятие";
+            // 
+            // comboBoxPlant
+            // 
+            comboBoxPlant.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboBoxPlant.FormattingEnabled = true;
+            comboBoxPlant.Location = new Point(6, 339);
+            comboBoxPlant.Name = "comboBoxPlant";
+            comboBoxPlant.Size = new Size(233, 23);
+            comboBoxPlant.TabIndex = 17;
             // 
             // textBoxMonth
             // 
@@ -266,7 +313,7 @@
             // 
             comboBoxFactProduct.DropDownStyle = ComboBoxStyle.DropDownList;
             comboBoxFactProduct.FormattingEnabled = true;
-            comboBoxFactProduct.Location = new Point(6, 341);
+            comboBoxFactProduct.Location = new Point(6, 383);
             comboBoxFactProduct.Name = "comboBoxFactProduct";
             comboBoxFactProduct.Size = new Size(233, 23);
             comboBoxFactProduct.TabIndex = 14;
@@ -274,7 +321,7 @@
             // label24
             // 
             label24.AutoSize = true;
-            label24.Location = new Point(6, 323);
+            label24.Location = new Point(6, 365);
             label24.Name = "label24";
             label24.Size = new Size(53, 15);
             label24.TabIndex = 13;
@@ -385,9 +432,128 @@
             dataGridViewFact.Size = new Size(644, 675);
             dataGridViewFact.TabIndex = 0;
             // 
+            // tabPage6
+            // 
+            tabPage6.Controls.Add(buttonAddPlant);
+            tabPage6.Controls.Add(textBoxPlantName);
+            tabPage6.Controls.Add(label28);
+            tabPage6.Controls.Add(dataGridViewPlant);
+            tabPage6.Location = new Point(4, 24);
+            tabPage6.Name = "tabPage6";
+            tabPage6.Padding = new Padding(3);
+            tabPage6.Size = new Size(895, 687);
+            tabPage6.TabIndex = 1;
+            tabPage6.Text = "Предприятие";
+            tabPage6.UseVisualStyleBackColor = true;
+            // 
+            // buttonAddPlant
+            // 
+            buttonAddPlant.Location = new Point(6, 658);
+            buttonAddPlant.Name = "buttonAddPlant";
+            buttonAddPlant.Size = new Size(233, 23);
+            buttonAddPlant.TabIndex = 12;
+            buttonAddPlant.Text = "Добавить";
+            buttonAddPlant.UseVisualStyleBackColor = true;
+            buttonAddPlant.Click += buttonAddPlant_Click;
+            // 
+            // textBoxPlantName
+            // 
+            textBoxPlantName.Location = new Point(6, 22);
+            textBoxPlantName.Name = "textBoxPlantName";
+            textBoxPlantName.Size = new Size(233, 23);
+            textBoxPlantName.TabIndex = 4;
+            // 
+            // label28
+            // 
+            label28.AutoSize = true;
+            label28.Location = new Point(6, 4);
+            label28.Name = "label28";
+            label28.Size = new Size(59, 15);
+            label28.TabIndex = 3;
+            label28.Text = "Название";
+            // 
+            // dataGridViewPlant
+            // 
+            dataGridViewPlant.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridViewPlant.Location = new Point(245, 6);
+            dataGridViewPlant.Name = "dataGridViewPlant";
+            dataGridViewPlant.RowTemplate.Height = 25;
+            dataGridViewPlant.Size = new Size(644, 675);
+            dataGridViewPlant.TabIndex = 1;
+            // 
+            // tabPage7
+            // 
+            tabPage7.Controls.Add(buttonAddBranch);
+            tabPage7.Controls.Add(label30);
+            tabPage7.Controls.Add(comboBoxBranchPlant);
+            tabPage7.Controls.Add(textBoxBranchName);
+            tabPage7.Controls.Add(label29);
+            tabPage7.Controls.Add(dataGridViewBranch);
+            tabPage7.Location = new Point(4, 24);
+            tabPage7.Name = "tabPage7";
+            tabPage7.Padding = new Padding(3);
+            tabPage7.Size = new Size(895, 687);
+            tabPage7.TabIndex = 2;
+            tabPage7.Text = "Отдел";
+            tabPage7.UseVisualStyleBackColor = true;
+            // 
+            // buttonAddBranch
+            // 
+            buttonAddBranch.Location = new Point(6, 658);
+            buttonAddBranch.Name = "buttonAddBranch";
+            buttonAddBranch.Size = new Size(233, 23);
+            buttonAddBranch.TabIndex = 21;
+            buttonAddBranch.Text = "Добавить";
+            buttonAddBranch.UseVisualStyleBackColor = true;
+            buttonAddBranch.Click += buttonAddBranch_Click;
+            // 
+            // label30
+            // 
+            label30.AutoSize = true;
+            label30.Location = new Point(3, 50);
+            label30.Name = "label30";
+            label30.Size = new Size(80, 15);
+            label30.TabIndex = 20;
+            label30.Text = "Предприятие";
+            // 
+            // comboBoxBranchPlant
+            // 
+            comboBoxBranchPlant.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboBoxBranchPlant.FormattingEnabled = true;
+            comboBoxBranchPlant.Location = new Point(3, 68);
+            comboBoxBranchPlant.Name = "comboBoxBranchPlant";
+            comboBoxBranchPlant.Size = new Size(233, 23);
+            comboBoxBranchPlant.TabIndex = 19;
+            // 
+            // textBoxBranchName
+            // 
+            textBoxBranchName.Location = new Point(3, 22);
+            textBoxBranchName.Name = "textBoxBranchName";
+            textBoxBranchName.Size = new Size(233, 23);
+            textBoxBranchName.TabIndex = 6;
+            // 
+            // label29
+            // 
+            label29.AutoSize = true;
+            label29.Location = new Point(3, 4);
+            label29.Name = "label29";
+            label29.Size = new Size(59, 15);
+            label29.TabIndex = 5;
+            label29.Text = "Название";
+            // 
+            // dataGridViewBranch
+            // 
+            dataGridViewBranch.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridViewBranch.Location = new Point(245, 6);
+            dataGridViewBranch.Name = "dataGridViewBranch";
+            dataGridViewBranch.RowTemplate.Height = 25;
+            dataGridViewBranch.Size = new Size(644, 675);
+            dataGridViewBranch.TabIndex = 2;
+            // 
             // tabPage1
             // 
             tabPage1.AutoScroll = true;
+            tabPage1.Controls.Add(comboBoxPrognozPlant);
             tabPage1.Controls.Add(cuOtherResults);
             tabPage1.Controls.Add(alOtherResults);
             tabPage1.Controls.Add(label15);
@@ -423,7 +589,7 @@
             tabPage1.Controls.Add(resultLabel);
             tabPage1.Controls.Add(label5);
             tabPage1.Controls.Add(label3);
-            tabPage1.Controls.Add(label1);
+            tabPage1.Controls.Add(labelPrognozPlantName);
             tabPage1.Controls.Add(dataGridViewFactAlum);
             tabPage1.Controls.Add(button1);
             tabPage1.Location = new Point(4, 24);
@@ -433,6 +599,16 @@
             tabPage1.TabIndex = 0;
             tabPage1.Text = "Прогнозирование";
             tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // comboBoxPrognozPlant
+            // 
+            comboBoxPrognozPlant.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboBoxPrognozPlant.FormattingEnabled = true;
+            comboBoxPrognozPlant.Location = new Point(6, 6);
+            comboBoxPrognozPlant.Name = "comboBoxPrognozPlant";
+            comboBoxPrognozPlant.Size = new Size(121, 23);
+            comboBoxPrognozPlant.TabIndex = 54;
+            comboBoxPrognozPlant.SelectedIndexChanged += comboBoxPrognozPlant_SelectedIndexChanged;
             // 
             // cuOtherResults
             // 
@@ -617,7 +793,7 @@
             // label8
             // 
             label8.AutoSize = true;
-            label8.Location = new Point(15, 58);
+            label8.Location = new Point(751, 58);
             label8.Name = "label8";
             label8.Size = new Size(82, 15);
             label8.TabIndex = 31;
@@ -626,7 +802,7 @@
             // label7
             // 
             label7.AutoSize = true;
-            label7.Location = new Point(15, 1041);
+            label7.Location = new Point(781, 1041);
             label7.Name = "label7";
             label7.Size = new Size(52, 15);
             label7.TabIndex = 30;
@@ -829,15 +1005,16 @@
             label3.TabIndex = 5;
             label3.Text = "label3";
             // 
-            // label1
+            // labelPrognozPlantName
             // 
-            label1.AutoSize = true;
-            label1.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point);
-            label1.Location = new Point(217, 16);
-            label1.Name = "label1";
-            label1.Size = new Size(519, 21);
-            label1.TabIndex = 3;
-            label1.Text = "Объём выпускаемой продукции ООО \"Оренбургский радиатор\"";
+            labelPrognozPlantName.AutoSize = true;
+            labelPrognozPlantName.Cursor = Cursors.No;
+            labelPrognozPlantName.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point);
+            labelPrognozPlantName.Location = new Point(15, 52);
+            labelPrognozPlantName.Name = "labelPrognozPlantName";
+            labelPrognozPlantName.Size = new Size(196, 21);
+            labelPrognozPlantName.TabIndex = 3;
+            labelPrognozPlantName.Text = "Выберите предприятие";
             // 
             // dataGridViewFactAlum
             // 
@@ -874,7 +1051,7 @@
             groupBox1.Location = new Point(6, 6);
             groupBox1.Name = "groupBox1";
             groupBox1.Size = new Size(900, 287);
-            groupBox1.TabIndex = 0;
+            groupBox1.TabIndex = 1;
             groupBox1.TabStop = false;
             groupBox1.Text = "Метод максимакса";
             // 
@@ -950,7 +1127,8 @@
             // 
             pictureBox2.Location = new Point(625, 22);
             pictureBox2.Name = "pictureBox2";
-            pictureBox2.Size = new Size(234, 42);
+            pictureBox2.Size = new Size(253, 47);
+            pictureBox2.SizeMode = PictureBoxSizeMode.StretchImage;
             pictureBox2.TabIndex = 3;
             pictureBox2.TabStop = false;
             // 
@@ -968,6 +1146,7 @@
             pictureBox1.Location = new Point(196, 22);
             pictureBox1.Name = "pictureBox1";
             pictureBox1.Size = new Size(220, 42);
+            pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
             pictureBox1.TabIndex = 1;
             pictureBox1.TabStop = false;
             // 
@@ -982,6 +1161,10 @@
             // 
             // tabPage4
             // 
+            tabPage4.Controls.Add(label31);
+            tabPage4.Controls.Add(dataGridViewStatAlternatives);
+            tabPage4.Controls.Add(label1);
+            tabPage4.Controls.Add(comboBoxStatBranch);
             tabPage4.Controls.Add(labelStatProdName);
             tabPage4.Controls.Add(labelStatsDiscount);
             tabPage4.Controls.Add(labelStatsAdPrice);
@@ -999,10 +1182,38 @@
             tabPage4.Text = "Статистический отчет";
             tabPage4.UseVisualStyleBackColor = true;
             // 
+            // dataGridViewStatAlternatives
+            // 
+            dataGridViewStatAlternatives.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridViewStatAlternatives.Location = new Point(419, 380);
+            dataGridViewStatAlternatives.Name = "dataGridViewStatAlternatives";
+            dataGridViewStatAlternatives.RowTemplate.Height = 25;
+            dataGridViewStatAlternatives.Size = new Size(493, 344);
+            dataGridViewStatAlternatives.TabIndex = 12;
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Location = new Point(3, 4);
+            label1.Name = "label1";
+            label1.Size = new Size(40, 15);
+            label1.TabIndex = 11;
+            label1.Text = "Отдел";
+            // 
+            // comboBoxStatBranch
+            // 
+            comboBoxStatBranch.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboBoxStatBranch.FormattingEnabled = true;
+            comboBoxStatBranch.Location = new Point(3, 22);
+            comboBoxStatBranch.Name = "comboBoxStatBranch";
+            comboBoxStatBranch.Size = new Size(202, 23);
+            comboBoxStatBranch.TabIndex = 10;
+            comboBoxStatBranch.SelectedIndexChanged += comboBoxStatBranch_SelectedIndexChanged;
+            // 
             // labelStatProdName
             // 
             labelStatProdName.AutoSize = true;
-            labelStatProdName.Location = new Point(3, 634);
+            labelStatProdName.Location = new Point(3, 365);
             labelStatProdName.Name = "labelStatProdName";
             labelStatProdName.Size = new Size(44, 15);
             labelStatProdName.TabIndex = 9;
@@ -1011,7 +1222,7 @@
             // labelStatsDiscount
             // 
             labelStatsDiscount.AutoSize = true;
-            labelStatsDiscount.Location = new Point(3, 709);
+            labelStatsDiscount.Location = new Point(3, 440);
             labelStatsDiscount.Name = "labelStatsDiscount";
             labelStatsDiscount.Size = new Size(44, 15);
             labelStatsDiscount.TabIndex = 8;
@@ -1020,7 +1231,7 @@
             // labelStatsAdPrice
             // 
             labelStatsAdPrice.AutoSize = true;
-            labelStatsAdPrice.Location = new Point(3, 694);
+            labelStatsAdPrice.Location = new Point(3, 425);
             labelStatsAdPrice.Name = "labelStatsAdPrice";
             labelStatsAdPrice.Size = new Size(44, 15);
             labelStatsAdPrice.TabIndex = 7;
@@ -1029,7 +1240,7 @@
             // labelStatsConcurrent
             // 
             labelStatsConcurrent.AutoSize = true;
-            labelStatsConcurrent.Location = new Point(3, 679);
+            labelStatsConcurrent.Location = new Point(3, 410);
             labelStatsConcurrent.Name = "labelStatsConcurrent";
             labelStatsConcurrent.Size = new Size(44, 15);
             labelStatsConcurrent.TabIndex = 6;
@@ -1038,7 +1249,7 @@
             // labelStatPrice
             // 
             labelStatPrice.AutoSize = true;
-            labelStatPrice.Location = new Point(3, 664);
+            labelStatPrice.Location = new Point(3, 395);
             labelStatPrice.Name = "labelStatPrice";
             labelStatPrice.Size = new Size(44, 15);
             labelStatPrice.TabIndex = 5;
@@ -1047,7 +1258,7 @@
             // labelStatTemp
             // 
             labelStatTemp.AutoSize = true;
-            labelStatTemp.Location = new Point(3, 649);
+            labelStatTemp.Location = new Point(3, 380);
             labelStatTemp.Name = "labelStatTemp";
             labelStatTemp.Size = new Size(44, 15);
             labelStatTemp.TabIndex = 4;
@@ -1056,7 +1267,7 @@
             // labelStatValue
             // 
             labelStatValue.AutoSize = true;
-            labelStatValue.Location = new Point(211, 25);
+            labelStatValue.Location = new Point(419, 25);
             labelStatValue.Name = "labelStatValue";
             labelStatValue.Size = new Size(0, 15);
             labelStatValue.TabIndex = 3;
@@ -1068,7 +1279,7 @@
             dataGridViewStats.Location = new Point(3, 51);
             dataGridViewStats.Name = "dataGridViewStats";
             dataGridViewStats.RowTemplate.Height = 25;
-            dataGridViewStats.Size = new Size(909, 580);
+            dataGridViewStats.Size = new Size(909, 311);
             dataGridViewStats.TabIndex = 2;
             // 
             // Column13
@@ -1109,7 +1320,7 @@
             // label25
             // 
             label25.AutoSize = true;
-            label25.Location = new Point(3, 4);
+            label25.Location = new Point(211, 4);
             label25.Name = "label25";
             label25.Size = new Size(54, 15);
             label25.TabIndex = 1;
@@ -1117,8 +1328,9 @@
             // 
             // comboBoxPrognozes
             // 
+            comboBoxPrognozes.DropDownStyle = ComboBoxStyle.DropDownList;
             comboBoxPrognozes.FormattingEnabled = true;
-            comboBoxPrognozes.Location = new Point(3, 22);
+            comboBoxPrognozes.Location = new Point(211, 22);
             comboBoxPrognozes.Name = "comboBoxPrognozes";
             comboBoxPrognozes.Size = new Size(202, 23);
             comboBoxPrognozes.TabIndex = 0;
@@ -1169,11 +1381,20 @@
             label25ddddd.TabIndex = 55;
             label25ddddd.Text = "label25";
             // 
+            // label31
+            // 
+            label31.AutoSize = true;
+            label31.Location = new Point(419, 365);
+            label31.Name = "label31";
+            label31.Size = new Size(165, 15);
+            label31.TabIndex = 13;
+            label31.Text = "Оптимальные альтернативы";
+            // 
             // Main
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(938, 772);
+            ClientSize = new Size(947, 772);
             Controls.Add(label25ddddd);
             Controls.Add(labelDebug);
             Controls.Add(tabControMain);
@@ -1181,12 +1402,19 @@
             Controls.Add(dataGridViewBuffer);
             Name = "Main";
             Text = "Form1";
+            Load += Main_Load;
             tabControMain.ResumeLayout(false);
             tabPage5.ResumeLayout(false);
             tabControlDataworks.ResumeLayout(false);
             tabPage111.ResumeLayout(false);
             tabPage111.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridViewFact).EndInit();
+            tabPage6.ResumeLayout(false);
+            tabPage6.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)dataGridViewPlant).EndInit();
+            tabPage7.ResumeLayout(false);
+            tabPage7.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)dataGridViewBranch).EndInit();
             tabPage1.ResumeLayout(false);
             tabPage1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)pairCuGrid).EndInit();
@@ -1201,6 +1429,7 @@
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             tabPage4.ResumeLayout(false);
             tabPage4.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)dataGridViewStatAlternatives).EndInit();
             ((System.ComponentModel.ISupportInitialize)dataGridViewStats).EndInit();
             ((System.ComponentModel.ISupportInitialize)dataGridViewBuffer).EndInit();
             ResumeLayout(false);
@@ -1215,22 +1444,7 @@
         private TabPage tabPage2;
         private TabPage tabPage4;
         private TabPage tabPage3;
-        private GroupBox groupBox1;
-        private PictureBox pictureBox1;
-        private Label label9;
-        private DataGridView dataGridView2;
-        private DataGridViewTextBoxColumn Column1;
-        private DataGridViewTextBoxColumn Column2;
-        private DataGridViewTextBoxColumn Column3;
-        private DataGridViewTextBoxColumn Column4;
-        private DataGridViewTextBoxColumn Column5;
-        private DataGridViewTextBoxColumn Column6;
-        private PictureBox pictureBox2;
-        private Label label10;
-        private Label label12;
-        private Label label11;
-        private Button button2;
-        private Label label1;
+        private Label labelPrognozPlantName;
         private DataGridView dataGridViewFactAlum;
         private Label label5;
         private Label label3;
@@ -1321,5 +1535,39 @@
         private DataGridViewTextBoxColumn Column12;
         private DataGridViewTextBoxColumn Column8;
         private DataGridViewTextBoxColumn Column9;
+        private Label label27;
+        private ComboBox comboBoxPlant;
+        private TabPage tabPage6;
+        private Button buttonAddPlant;
+        private TextBox textBoxPlantName;
+        private Label label28;
+        private TabPage tabPage7;
+        private DataGridView dataGridViewPlant;
+        private TextBox textBoxBranchName;
+        private Label label29;
+        private DataGridView dataGridViewBranch;
+        private Label label30;
+        private ComboBox comboBoxBranchPlant;
+        private Button buttonAddBranch;
+        private ComboBox comboBoxPrognozPlant;
+        private Label label1;
+        private ComboBox comboBoxStatBranch;
+        private GroupBox groupBox1;
+        private Label label12;
+        private Label label11;
+        private Button button2;
+        private DataGridView dataGridView2;
+        private DataGridViewTextBoxColumn Column1;
+        private DataGridViewTextBoxColumn Column2;
+        private DataGridViewTextBoxColumn Column3;
+        private DataGridViewTextBoxColumn Column4;
+        private DataGridViewTextBoxColumn Column5;
+        private DataGridViewTextBoxColumn Column6;
+        private PictureBox pictureBox2;
+        private Label label10;
+        private PictureBox pictureBox1;
+        private Label label9;
+        private DataGridView dataGridViewStatAlternatives;
+        private Label label31;
     }
 }

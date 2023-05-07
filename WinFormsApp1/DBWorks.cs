@@ -24,13 +24,13 @@ namespace WinFormsApp1
             return dataSet.Tables[0].DefaultView;
         }
 
-        public string InsertFact(string temperature, string price, string concPrice, string adPrice, string discount, string soldAmount, string productKey, string month)
+        public string InsertFact(string temperature, string price, string concPrice, string adPrice, string discount, string soldAmount, string productKey, string month, string plantId)
         {
             try
             {
                 SqlCommand command = new SqlCommand(
-                    $"INSERT INTO [VKR].[dbo].[Факт_выпуска] ([темп_окр_среды], [цена], [цена_конкурентов], [цена_на_рекламу], [скидка], [количество_проданных], [код_выпускаемой_продукции], [месяц]) " +
-                    $"VALUES ('{temperature}', '{price}', '{concPrice}', '{adPrice}', '{discount}', '{soldAmount}', '{productKey}', '{month}');", 
+                    $"INSERT INTO [VKR].[dbo].[Факт_выпуска] ([темп_окр_среды], [цена], [цена_конкурентов], [цена_на_рекламу], [скидка], [количество_проданных], [код_выпускаемой_продукции], [месяц], [код_предприятия]) " +
+                    $"VALUES ('{temperature}', '{price}', '{concPrice}', '{adPrice}', '{discount}', '{soldAmount}', '{productKey}', '{month}', '{plantId}');", 
                     connection
                 );
                 command.ExecuteNonQuery();
@@ -59,11 +59,56 @@ namespace WinFormsApp1
             }
         }
 
-        public string InsertPrognoz(string value, string factTuple, string planId)
+        public string InsertAlternative(string value)
         {
             try
             {
-                SqlCommand command = new SqlCommand($"INSERT INTO [VKR].[dbo].[Прогноз] ([значение], [кортеж_фактов], [код_плана]) VALUES ('{value}', '{factTuple}', '{planId}');", connection);
+                SqlCommand command = new SqlCommand($"INSERT INTO [VKR].[dbo].[Подбор_оптимальной_альтернативы] ([наименование_вида]) VALUES ('{value}');", connection);
+                command.ExecuteNonQuery();
+                connection.Close();
+                return "Команда выполнена";
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+        }
+
+        public string InsertPrognoz(string value, string factTuple, string planId, string branchId)
+        {
+            try
+            {
+                SqlCommand command = new SqlCommand($"INSERT INTO [VKR].[dbo].[Прогноз] ([значение], [список_фактов], [код_плана], [код_отдела]) VALUES ('{value}', '{factTuple}', '{planId}', '{branchId}');", connection);
+                command.ExecuteNonQuery();
+                connection.Close();
+                return "Команда выполнена";
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+        }
+
+        public string InsertPlant(string name)
+        {
+            try
+            {
+                SqlCommand command = new SqlCommand($"INSERT INTO [VKR].[dbo].[Предприятие] ([название]) VALUES ('{name}');", connection);
+                command.ExecuteNonQuery();
+                connection.Close();
+                return "Команда выполнена";
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+        }
+
+        public string InsertBranch(string name, string plantId)
+        {
+            try
+            {
+                SqlCommand command = new SqlCommand($"INSERT INTO [VKR].[dbo].[Отдел] ([наименование], [код_предприятия]) VALUES ('{name}', '{plantId}');", connection);
                 command.ExecuteNonQuery();
                 connection.Close();
                 return "Команда выполнена";
