@@ -574,7 +574,7 @@ namespace WinFormsApp1
         void UpdateAlternativeGrid()
         {
             DBWorks works = new DBWorks(connection);
-            dataGridViewStatAlternatives.DataSource = works.ReturnTable("[наименование_вида] AS 'Название'", "[VKR].[dbo].[Подбор_оптимальной_альтернативы]", null);
+            dataGridViewStatAlternatives.DataSource = works.ReturnTable("[наименование_вида] AS 'Название', [дата_подбора] AS 'Дата подбора'", "[VKR].[dbo].[Подбор_оптимальной_альтернативы]", null);
         }
 
         void UpdatePrognozBranchCombo()
