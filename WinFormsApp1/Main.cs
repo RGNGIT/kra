@@ -533,6 +533,12 @@ namespace WinFormsApp1
                             "[VKR].[dbo].[Факт_выпуска] AS a, [VKR].[dbo].[Выпускаемая_продукция] AS b, [VKR].[dbo].[Предприятие] AS c ",
                             "WHERE a.[код_выпускаемой_продукции] = b.[номер_выпускаемой_продукции] AND a.[код_предприятия] = c.[код_предприятия];"
                         );
+                        DBWorks works5 = new DBWorks(connection);
+                        dataGridViewProduction.DataSource = works5.ReturnTable(
+                            "a.[наименование_выпускаемой_продукции], c.[наименование], b.[значение]", 
+                            "[VKR].[dbo].[Выпускаемая_продукция] AS a, [VKR].[dbo].[Продукция_показатель] AS b, [VKR].[dbo].[Технический_показатель] AS c",
+                            "WHERE b.[код_продукции] = a.[номер_выпускаемой_продукции] AND b.[код_показателя] = c.[код_технического_показателя];"
+                        );
                         break;
                     case 1:
                         DBWorks works3 = new DBWorks(connection);

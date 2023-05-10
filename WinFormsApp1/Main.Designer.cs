@@ -137,6 +137,7 @@
             pictureBox1 = new PictureBox();
             label9 = new Label();
             tabPage4 = new TabPage();
+            label31 = new Label();
             dataGridViewStatAlternatives = new DataGridView();
             label1 = new Label();
             comboBoxStatBranch = new ComboBox();
@@ -162,7 +163,8 @@
             dataGridViewBuffer = new DataGridView();
             button5 = new Button();
             label25ddddd = new Label();
-            label31 = new Label();
+            tabPage8 = new TabPage();
+            dataGridViewProduction = new DataGridView();
             tabControMain.SuspendLayout();
             tabPage5.SuspendLayout();
             tabControlDataworks.SuspendLayout();
@@ -186,6 +188,8 @@
             ((System.ComponentModel.ISupportInitialize)dataGridViewStatAlternatives).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dataGridViewStats).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dataGridViewBuffer).BeginInit();
+            tabPage8.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dataGridViewProduction).BeginInit();
             SuspendLayout();
             // 
             // button1
@@ -228,6 +232,7 @@
             tabControlDataworks.Controls.Add(tabPage111);
             tabControlDataworks.Controls.Add(tabPage6);
             tabControlDataworks.Controls.Add(tabPage7);
+            tabControlDataworks.Controls.Add(tabPage8);
             tabControlDataworks.Location = new Point(6, 6);
             tabControlDataworks.Name = "tabControlDataworks";
             tabControlDataworks.SelectedIndex = 0;
@@ -1182,6 +1187,15 @@
             tabPage4.Text = "Статистический отчет";
             tabPage4.UseVisualStyleBackColor = true;
             // 
+            // label31
+            // 
+            label31.AutoSize = true;
+            label31.Location = new Point(419, 365);
+            label31.Name = "label31";
+            label31.Size = new Size(165, 15);
+            label31.TabIndex = 13;
+            label31.Text = "Оптимальные альтернативы";
+            // 
             // dataGridViewStatAlternatives
             // 
             dataGridViewStatAlternatives.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
@@ -1381,14 +1395,25 @@
             label25ddddd.TabIndex = 55;
             label25ddddd.Text = "label25";
             // 
-            // label31
+            // tabPage8
             // 
-            label31.AutoSize = true;
-            label31.Location = new Point(419, 365);
-            label31.Name = "label31";
-            label31.Size = new Size(165, 15);
-            label31.TabIndex = 13;
-            label31.Text = "Оптимальные альтернативы";
+            tabPage8.Controls.Add(dataGridViewProduction);
+            tabPage8.Location = new Point(4, 24);
+            tabPage8.Name = "tabPage8";
+            tabPage8.Padding = new Padding(3);
+            tabPage8.Size = new Size(895, 687);
+            tabPage8.TabIndex = 3;
+            tabPage8.Text = "Продукция";
+            tabPage8.UseVisualStyleBackColor = true;
+            // 
+            // dataGridViewProduction
+            // 
+            dataGridViewProduction.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridViewProduction.Location = new Point(3, 3);
+            dataGridViewProduction.Name = "dataGridViewProduction";
+            dataGridViewProduction.RowTemplate.Height = 25;
+            dataGridViewProduction.Size = new Size(889, 675);
+            dataGridViewProduction.TabIndex = 3;
             // 
             // Main
             // 
@@ -1432,6 +1457,8 @@
             ((System.ComponentModel.ISupportInitialize)dataGridViewStatAlternatives).EndInit();
             ((System.ComponentModel.ISupportInitialize)dataGridViewStats).EndInit();
             ((System.ComponentModel.ISupportInitialize)dataGridViewBuffer).EndInit();
+            tabPage8.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)dataGridViewProduction).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -1569,5 +1596,7 @@
         private Label label9;
         private DataGridView dataGridViewStatAlternatives;
         private Label label31;
+        private TabPage tabPage8;
+        private DataGridView dataGridViewProduction;
     }
 }
