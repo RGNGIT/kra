@@ -1,7 +1,4 @@
-﻿using System;
-using System.Text.RegularExpressions;
-
-namespace WinFormsApp1
+﻿namespace WinFormsApp1
 {
     public partial class Main : Form
     {
@@ -516,9 +513,32 @@ namespace WinFormsApp1
             }
         }
 
+        void UpdateAlternativesGrid()
+        {
+            DBWorks works = new DBWorks(connection);
+            dataGridViewBuffer.DataSource = works.ReturnTable(
+                "a.[наименование_выпускаемой_продукции], c.[наименование], b.[значение], a.[стоимость]",
+                "[VKR].[dbo].[Выпускаемая_продукция] AS a, [VKR].[dbo].[Продукция_показатель] AS b, [VKR].[dbo].[Технический_показатель] AS c",
+                "WHERE b.[код_продукции] = a.[номер_выпускаемой_продукции] AND b.[код_показателя] = c.[код_технического_показателя];"
+            );
+            for (int i = 0; i < dataGridViewBuffer.Rows.Count - 1; i += 3)
+            {
+                dataGridView2.Rows.Add(
+                    dataGridViewBuffer.Rows[i].Cells[0].Value.ToString(),
+                    dataGridViewBuffer.Rows[i].Cells[2].Value.ToString(),
+                    dataGridViewBuffer.Rows[i + 1].Cells[2].Value.ToString(),
+                    dataGridViewBuffer.Rows[i].Cells[3].Value.ToString(),
+                    dataGridViewBuffer.Rows[i + 2].Cells[2].Value.ToString()
+                );
+            }
+        }
+
         void RefreshAll()
         {
-
+            if (tabControMain.SelectedIndex == 2)
+            {
+                UpdateAlternativesGrid();
+            }
             if (tabControMain.SelectedIndex == 0)
             {
                 switch (tabControlDataworks.SelectedIndex)
@@ -535,7 +555,7 @@ namespace WinFormsApp1
                         );
                         DBWorks works5 = new DBWorks(connection);
                         dataGridViewProduction.DataSource = works5.ReturnTable(
-                            "a.[наименование_выпускаемой_продукции], c.[наименование], b.[значение]", 
+                            "a.[наименование_выпускаемой_продукции], c.[наименование], b.[значение], a.[стоимость]",
                             "[VKR].[dbo].[Выпускаемая_продукция] AS a, [VKR].[dbo].[Продукция_показатель] AS b, [VKR].[dbo].[Технический_показатель] AS c",
                             "WHERE b.[код_продукции] = a.[номер_выпускаемой_продукции] AND b.[код_показателя] = c.[код_технического_показателя];"
                         );
@@ -566,12 +586,12 @@ namespace WinFormsApp1
             if (tabControMain.SelectedIndex == 3 || (UserStore.role == "rukovoditel" && tabControMain.SelectedIndex == 1))
             {
                 UpdatePrognozBranchCombo();
-                UpdateAlternativeGrid();
+                UpdateAlternativeStatGrid();
 
             }
         }
 
-        void UpdateAlternativeGrid()
+        void UpdateAlternativeStatGrid()
         {
             DBWorks works = new DBWorks(connection);
             dataGridViewStatAlternatives.DataSource = works.ReturnTable("[наименование_вида] AS 'Название', [дата_подбора] AS 'Дата подбора'", "[VKR].[dbo].[Подбор_оптимальной_альтернативы]", null);
@@ -768,11 +788,13 @@ namespace WinFormsApp1
 
         private void Main_Load(object sender, EventArgs e)
         {
+            /*
             foreach (var line in File.ReadLines("File.txt"))
             {
                 var array = line.Split();
                 dataGridView2.Rows.Add(array);
             }
+            */
         }
     }
 }

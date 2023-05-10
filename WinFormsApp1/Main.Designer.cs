@@ -69,6 +69,8 @@
             textBoxBranchName = new TextBox();
             label29 = new Label();
             dataGridViewBranch = new DataGridView();
+            tabPage8 = new TabPage();
+            dataGridViewProduction = new DataGridView();
             tabPage1 = new TabPage();
             comboBoxPrognozPlant = new ComboBox();
             cuOtherResults = new Label();
@@ -163,8 +165,6 @@
             dataGridViewBuffer = new DataGridView();
             button5 = new Button();
             label25ddddd = new Label();
-            tabPage8 = new TabPage();
-            dataGridViewProduction = new DataGridView();
             tabControMain.SuspendLayout();
             tabPage5.SuspendLayout();
             tabControlDataworks.SuspendLayout();
@@ -174,6 +174,8 @@
             ((System.ComponentModel.ISupportInitialize)dataGridViewPlant).BeginInit();
             tabPage7.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridViewBranch).BeginInit();
+            tabPage8.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dataGridViewProduction).BeginInit();
             tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pairCuGrid).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dataGridViewFactCopper).BeginInit();
@@ -188,8 +190,6 @@
             ((System.ComponentModel.ISupportInitialize)dataGridViewStatAlternatives).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dataGridViewStats).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dataGridViewBuffer).BeginInit();
-            tabPage8.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)dataGridViewProduction).BeginInit();
             SuspendLayout();
             // 
             // button1
@@ -554,6 +554,26 @@
             dataGridViewBranch.RowTemplate.Height = 25;
             dataGridViewBranch.Size = new Size(644, 675);
             dataGridViewBranch.TabIndex = 2;
+            // 
+            // tabPage8
+            // 
+            tabPage8.Controls.Add(dataGridViewProduction);
+            tabPage8.Location = new Point(4, 24);
+            tabPage8.Name = "tabPage8";
+            tabPage8.Padding = new Padding(3);
+            tabPage8.Size = new Size(895, 687);
+            tabPage8.TabIndex = 3;
+            tabPage8.Text = "Продукция";
+            tabPage8.UseVisualStyleBackColor = true;
+            // 
+            // dataGridViewProduction
+            // 
+            dataGridViewProduction.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridViewProduction.Location = new Point(3, 3);
+            dataGridViewProduction.Name = "dataGridViewProduction";
+            dataGridViewProduction.RowTemplate.Height = 25;
+            dataGridViewProduction.Size = new Size(889, 675);
+            dataGridViewProduction.TabIndex = 3;
             // 
             // tabPage1
             // 
@@ -1055,7 +1075,7 @@
             groupBox1.Controls.Add(label9);
             groupBox1.Location = new Point(6, 6);
             groupBox1.Name = "groupBox1";
-            groupBox1.Size = new Size(900, 287);
+            groupBox1.Size = new Size(900, 715);
             groupBox1.TabIndex = 1;
             groupBox1.TabStop = false;
             groupBox1.Text = "Метод максимакса";
@@ -1063,7 +1083,7 @@
             // label12
             // 
             label12.AutoSize = true;
-            label12.Location = new Point(23, 242);
+            label12.Location = new Point(6, 661);
             label12.Name = "label12";
             label12.Size = new Size(44, 15);
             label12.TabIndex = 7;
@@ -1072,7 +1092,7 @@
             // label11
             // 
             label11.AutoSize = true;
-            label11.Location = new Point(23, 214);
+            label11.Location = new Point(6, 646);
             label11.Name = "label11";
             label11.Size = new Size(165, 15);
             label11.TabIndex = 6;
@@ -1080,7 +1100,7 @@
             // 
             // button2
             // 
-            button2.Location = new Point(718, 107);
+            button2.Location = new Point(766, 646);
             button2.Name = "button2";
             button2.Size = new Size(128, 63);
             button2.TabIndex = 5;
@@ -1095,7 +1115,7 @@
             dataGridView2.Location = new Point(6, 75);
             dataGridView2.Name = "dataGridView2";
             dataGridView2.RowTemplate.Height = 25;
-            dataGridView2.Size = new Size(689, 126);
+            dataGridView2.Size = new Size(888, 565);
             dataGridView2.TabIndex = 4;
             // 
             // Column1
@@ -1395,26 +1415,6 @@
             label25ddddd.TabIndex = 55;
             label25ddddd.Text = "label25";
             // 
-            // tabPage8
-            // 
-            tabPage8.Controls.Add(dataGridViewProduction);
-            tabPage8.Location = new Point(4, 24);
-            tabPage8.Name = "tabPage8";
-            tabPage8.Padding = new Padding(3);
-            tabPage8.Size = new Size(895, 687);
-            tabPage8.TabIndex = 3;
-            tabPage8.Text = "Продукция";
-            tabPage8.UseVisualStyleBackColor = true;
-            // 
-            // dataGridViewProduction
-            // 
-            dataGridViewProduction.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewProduction.Location = new Point(3, 3);
-            dataGridViewProduction.Name = "dataGridViewProduction";
-            dataGridViewProduction.RowTemplate.Height = 25;
-            dataGridViewProduction.Size = new Size(889, 675);
-            dataGridViewProduction.TabIndex = 3;
-            // 
             // Main
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -1440,6 +1440,8 @@
             tabPage7.ResumeLayout(false);
             tabPage7.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridViewBranch).EndInit();
+            tabPage8.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)dataGridViewProduction).EndInit();
             tabPage1.ResumeLayout(false);
             tabPage1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)pairCuGrid).EndInit();
@@ -1457,8 +1459,6 @@
             ((System.ComponentModel.ISupportInitialize)dataGridViewStatAlternatives).EndInit();
             ((System.ComponentModel.ISupportInitialize)dataGridViewStats).EndInit();
             ((System.ComponentModel.ISupportInitialize)dataGridViewBuffer).EndInit();
-            tabPage8.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)dataGridViewProduction).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
