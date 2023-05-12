@@ -9,8 +9,8 @@ namespace WinFormsApp1
         string[] pass = { "123", "123", "123" };
         string[] role = { "admin", "rukovoditel", "operator" };
         int N;
-        string hash1;
-        string hash2;
+        string? hash1;
+        string? hash2;
         int id;
         int num;
         int numtrans = 1;

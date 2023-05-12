@@ -325,18 +325,16 @@
 
         private void button1_Click_1(object sender, EventArgs e)
         {
-            //try
-            //{
-            calcKraAl();
-            calcCraCu();
-
-
-            //}
-            //catch (Exception exc)
-            //{
-            //    Console.WriteLine(exc.ToString());    
-            //    MessageBox.Show("Некоректный ввод", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            //}
+            try
+            {
+                calcKraAl();
+                calcCraCu();
+            }
+            catch (Exception exc)
+            {
+                Console.WriteLine(exc.ToString());
+                MessageBox.Show("Выберите предприятие", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         void PostPrognoz(string value, string factTuple, string planTemperature, string planPrice, string planConcPrice, string planAdPrice, string planDiscount, string productId, string branchId)
@@ -425,14 +423,14 @@
             DBWorks works1 = new DBWorks(connection);
             // Аллюм
             dataGridViewFactAlum.DataSource = works1.ReturnTable(
-                "c.[темп_окр_среды] AS 'Температура окружающей среды', c.[цена] AS 'Цена', c.[цена_конкурентов] AS 'Цена конкурентов', c.[цена_на_рекламу] AS 'Цена на рекламу', c.[скидка] AS 'Скидка', c.[количество_проданных] AS 'Количество выпущенных', c.[месяц], c.[номер_факта_выпуска] ",
+                "c.[темп_окр_среды] AS 'Температура окружающей среды', c.[цена] AS 'Цена', c.[цена_конкурентов] AS 'Цена конкурентов', c.[цена_на_рекламу] AS 'Цена на рекламу', c.[скидка] AS 'Скидка', c.[количество_проданных] AS 'Количество выпущенных', c.[месяц], c.[год], c.[номер_факта_выпуска] ",
                 "[VKR].[dbo].[Выпускаемая_продукция] AS a, [VKR].[dbo].[Вид_выпускаемой_продукции] AS b, [VKR].[dbo].[Факт_выпуска] AS c",
                 $"WHERE a.[код_вида] = b.[код_вида] AND c.[код_выпускаемой_продукции] = a.[номер_выпускаемой_продукции] AND b.[код_вида] = 9 AND c.[код_предприятия] = {plantId};"
             );
             DBWorks works2 = new DBWorks(connection);
             // Медь
             dataGridViewFactCopper.DataSource = works2.ReturnTable(
-                "c.[темп_окр_среды] AS 'Температура окружающей среды', c.[цена] AS 'Цена', c.[цена_конкурентов] AS 'Цена конкурентов', c.[цена_на_рекламу] AS 'Цена на рекламу', c.[скидка] AS 'Скидка', c.[количество_проданных] AS 'Количество выпущенных', c.[месяц], c.[номер_факта_выпуска] ",
+                "c.[темп_окр_среды] AS 'Температура окружающей среды', c.[цена] AS 'Цена', c.[цена_конкурентов] AS 'Цена конкурентов', c.[цена_на_рекламу] AS 'Цена на рекламу', c.[скидка] AS 'Скидка', c.[количество_проданных] AS 'Количество выпущенных', c.[месяц], c.[год], c.[номер_факта_выпуска] ",
                 "[VKR].[dbo].[Выпускаемая_продукция] AS a, [VKR].[dbo].[Вид_выпускаемой_продукции] AS b, [VKR].[dbo].[Факт_выпуска] AS c",
                 $"WHERE a.[код_вида] = b.[код_вида] AND c.[код_выпускаемой_продукции] = a.[номер_выпускаемой_продукции] AND b.[код_вида] = 8 AND c.[код_предприятия] = {plantId};"
             );
@@ -548,14 +546,14 @@
                         UpdateProductionCombo();
                         DBWorks works1 = new DBWorks(connection);
                         dataGridViewFact.DataSource = works1.ReturnTable(
-                            "a.[месяц], a.[темп_окр_среды], a.[цена], a.[цена_конкурентов], a.[цена_на_рекламу], a.[скидка], a.[количество_проданных], " +
+                            "a.[номер_факта_выпуска], a.[месяц], a.[темп_окр_среды], a.[цена], a.[цена_конкурентов], a.[цена_на_рекламу], a.[скидка], a.[количество_проданных], " +
                             "b.[наименование_выпускаемой_продукции], c.[название] AS 'Завод'",
                             "[VKR].[dbo].[Факт_выпуска] AS a, [VKR].[dbo].[Выпускаемая_продукция] AS b, [VKR].[dbo].[Предприятие] AS c ",
                             "WHERE a.[код_выпускаемой_продукции] = b.[номер_выпускаемой_продукции] AND a.[код_предприятия] = c.[код_предприятия];"
                         );
                         DBWorks works5 = new DBWorks(connection);
                         dataGridViewProduction.DataSource = works5.ReturnTable(
-                            "a.[наименование_выпускаемой_продукции], c.[наименование], b.[значение], a.[стоимость]",
+                            "a.[номер_выпускаемой_продукции], a.[наименование_выпускаемой_продукции], c.[наименование], b.[значение], a.[стоимость]",
                             "[VKR].[dbo].[Выпускаемая_продукция] AS a, [VKR].[dbo].[Продукция_показатель] AS b, [VKR].[dbo].[Технический_показатель] AS c",
                             "WHERE b.[код_продукции] = a.[номер_выпускаемой_продукции] AND b.[код_показателя] = c.[код_технического_показателя];"
                         );
@@ -567,7 +565,7 @@
                     case 2:
                         UpdateComboPlant();
                         DBWorks works4 = new DBWorks(connection);
-                        dataGridViewBranch.DataSource = works4.ReturnTable("a.[наименование], b.[название]", "[VKR].[dbo].[Отдел] AS a, [VKR].[dbo].[Предприятие] AS b", "WHERE a.[код_отдела] = b.[код_предприятия];");
+                        dataGridViewBranch.DataSource = works4.ReturnTable("a.[код_отдела], a.[наименование], b.[название]", "[VKR].[dbo].[Отдел] AS a, [VKR].[dbo].[Предприятие] AS b", "WHERE a.[код_отдела] = b.[код_предприятия];");
                         break;
                 }
             }
@@ -626,6 +624,7 @@
                 textBoxFactAmountSold.Text,
                 dataGridViewBuffer.Rows[comboBoxFactProduct.SelectedIndex].Cells[0].Value.ToString()!,
                 textBoxMonth.Text,
+                textBoxFactYear.Text,
                 comboBoxPlant.Text.Split(' ')[0]
             );
             UpdateProductionCombo();
@@ -657,7 +656,7 @@
                 "[VKR].[dbo].[Прогноз] AS a, [VKR].[dbo].[План_выпуска] AS b",
                 $"WHERE a.[код_плана] = b.[номер_плана] AND a.[код_прогноза] = {prognozId[1]};"
             );
-            labelStatValue.Text = "Y = " + dataGridViewBuffer.Rows[0].Cells[1].Value.ToString();
+            labelStatValue.Text = "Результат прогноза на следующий месяц Y = " + dataGridViewBuffer.Rows[0].Cells[1].Value.ToString();
             string planId = dataGridViewBuffer.Rows[0].Cells[3].Value.ToString()!;
             string[] factTuple = dataGridViewBuffer.Rows[0].Cells[2].Value.ToString()!.Split(',');
             DBWorks works2 = new DBWorks(connection);
@@ -666,11 +665,11 @@
                 "[VKR].[dbo].[План_выпуска] AS a",
                 $"WHERE a.[номер_плана] = {planId};"
             );
-            labelStatTemp.Text = $"Плановая температура окружающей среды: {dataGridViewBuffer.Rows[0].Cells[1].Value}";
-            labelStatPrice.Text = $"Плановая цена: {dataGridViewBuffer.Rows[0].Cells[2].Value}";
-            labelStatsConcurrent.Text = $"Плановая цена конкурентов: {dataGridViewBuffer.Rows[0].Cells[3].Value}";
-            labelStatsAdPrice.Text = $"Плановая цена рекламы: {dataGridViewBuffer.Rows[0].Cells[4].Value}";
-            labelStatsDiscount.Text = $"Плановая скидка: {dataGridViewBuffer.Rows[0].Cells[5].Value}";
+            textBoxStatTemp.Text = dataGridViewBuffer.Rows[0].Cells[1].Value.ToString();
+            textBoxStatPrice.Text = dataGridViewBuffer.Rows[0].Cells[2].Value.ToString();
+            textBoxStatConcurrent.Text = dataGridViewBuffer.Rows[0].Cells[3].Value.ToString();
+            textBoxStatAdPrice.Text = dataGridViewBuffer.Rows[0].Cells[4].Value.ToString();
+            textBoxStatDiscount.Text = dataGridViewBuffer.Rows[0].Cells[5].Value.ToString();
             string productId = dataGridViewBuffer.Rows[0].Cells[6].Value.ToString()!;
             DBWorks works3 = new DBWorks(connection);
             dataGridViewBuffer.DataSource = works3.ReturnTable("*", "[VKR].[dbo].[Выпускаемая_продукция] AS a", $"WHERE a.[номер_выпускаемой_продукции] = {productId};");
@@ -682,6 +681,7 @@
                 dataGridViewBuffer.DataSource = works4.ReturnTable("*", "[VKR].[dbo].[Факт_выпуска] AS a", $"WHERE a.[номер_факта_выпуска] = {factId};");
                 dataGridViewStats.Rows.Add(
                     Month[int.Parse(dataGridViewBuffer.Rows[0].Cells[7].Value.ToString()!)],
+                    dataGridViewBuffer.Rows[0].Cells[8].Value,
                     dataGridViewBuffer.Rows[0].Cells[1].Value,
                     dataGridViewBuffer.Rows[0].Cells[2].Value,
                     dataGridViewBuffer.Rows[0].Cells[3].Value,
@@ -795,6 +795,89 @@
                 dataGridView2.Rows.Add(array);
             }
             */
+        }
+
+        void FactSelected()
+        {
+
+        }
+
+        void PlantSelected()
+        {
+
+        }
+
+        void BranchSelected()
+        {
+
+        }
+
+        private void dataGridViewFact_RowHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            FactSelected();
+        }
+
+        private void dataGridViewPlant_RowHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            PlantSelected();
+        }
+
+        private void dataGridViewBranch_RowHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            BranchSelected();
+        }
+
+        private void dataGridViewFact_CellMouseClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            dataGridViewFact.Rows[e.RowIndex].Selected = true;
+            FactSelected();
+        }
+
+        private void dataGridViewPlant_CellMouseClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            dataGridViewPlant.Rows[e.RowIndex].Selected = true;
+            PlantSelected();
+        }
+
+        private void dataGridViewBranch_CellMouseClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            dataGridViewBranch.Rows[e.RowIndex].Selected = true;
+            BranchSelected();
+        }
+
+        private void buttonUpdateFact_Click(object sender, EventArgs e)
+        {
+            DBWorks works = new DBWorks(connection);
+            SetBufferCombo();
+            works.UpdateFact(
+                textBoxFactTempOrkSred.Text,
+                textBoxFactPrice.Text,
+                textBoxFactConcurentPrice.Text,
+                textBoxFactAdPrice.Text,
+                textBoxFactDiscount.Text,
+                textBoxFactAmountSold.Text,
+                dataGridViewBuffer.Rows[comboBoxFactProduct.SelectedIndex].Cells[0].Value.ToString()!,
+                textBoxMonth.Text,
+                textBoxFactYear.Text,
+                comboBoxPlant.Text.Split(' ')[0],
+                dataGridViewFact.SelectedRows[0].Cells[0].Value.ToString()!
+            );
+            UpdateProductionCombo();
+            RefreshAll();
+        }
+
+        private void buttonUpdatePlant_Click(object sender, EventArgs e)
+        {
+            DBWorks works = new DBWorks(connection);
+            works.UpdatePlant(textBoxPlantName.Text, dataGridViewPlant.SelectedRows[0].Cells[0].Value.ToString()!);
+            RefreshAll();
+        }
+
+        private void buttonUpdateBranch_Click(object sender, EventArgs e)
+        {
+            DBWorks works = new DBWorks(connection);
+            works.UpdateBranch(textBoxBranchName.Text, comboBoxBranchPlant.Text.Split(' ')[0], dataGridViewBranch.SelectedRows[0].Cells[0].Value.ToString()!);
+            RefreshAll();
         }
     }
 }

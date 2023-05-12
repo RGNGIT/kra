@@ -24,7 +24,7 @@ namespace WinFormsApp1
             return result;
         }
 
-        public List<List<double>> backMatrix(List<List<double>> matrix)
+        public List<List<double>>? backMatrix(List<List<double>> matrix)
         {
             List<List<double>> result = new();
 

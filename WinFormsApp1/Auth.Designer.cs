@@ -666,6 +666,7 @@
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(751, 582);
             Controls.Add(tabControl1);
+            FormBorderStyle = FormBorderStyle.FixedDialog;
             Name = "Auth";
             Text = "Form2";
             Load += Form2_Load;

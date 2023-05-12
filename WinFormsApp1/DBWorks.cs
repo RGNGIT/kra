@@ -24,13 +24,13 @@ namespace WinFormsApp1
             return dataSet.Tables[0].DefaultView;
         }
 
-        public string InsertFact(string temperature, string price, string concPrice, string adPrice, string discount, string soldAmount, string productKey, string month, string plantId)
+        public string InsertFact(string temperature, string price, string concPrice, string adPrice, string discount, string soldAmount, string productKey, string month, string year, string plantId)
         {
             try
             {
                 SqlCommand command = new SqlCommand(
-                    $"INSERT INTO [VKR].[dbo].[Факт_выпуска] ([темп_окр_среды], [цена], [цена_конкурентов], [цена_на_рекламу], [скидка], [количество_проданных], [код_выпускаемой_продукции], [месяц], [код_предприятия]) " +
-                    $"VALUES ('{temperature}', '{price}', '{concPrice}', '{adPrice}', '{discount}', '{soldAmount}', '{productKey}', '{month}', '{plantId}');", 
+                    $"INSERT INTO [VKR].[dbo].[Факт_выпуска] ([темп_окр_среды], [цена], [цена_конкурентов], [цена_на_рекламу], [скидка], [количество_проданных], [код_выпускаемой_продукции], [месяц], [год], [код_предприятия]) " +
+                    $"VALUES ('{temperature}', '{price}', '{concPrice}', '{adPrice}', '{discount}', '{soldAmount}', '{productKey}', '{month}', '{year}', '{plantId}');", 
                     connection
                 );
                 command.ExecuteNonQuery();
@@ -109,6 +109,55 @@ namespace WinFormsApp1
             try
             {
                 SqlCommand command = new SqlCommand($"INSERT INTO [VKR].[dbo].[Отдел] ([наименование], [код_предприятия]) VALUES ('{name}', '{plantId}');", connection);
+                command.ExecuteNonQuery();
+                connection.Close();
+                return "Команда выполнена";
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+        }
+
+        public string UpdateFact(string temperature, string price, string concPrice, string adPrice, string discount, string soldAmount, string productKey, string month, string year, string plantId, string factId)
+        {
+            try
+            {
+                SqlCommand command = new SqlCommand(
+                    $"UPDATE [VKR].[dbo].[Факт_выпуска] SET [темп_окр_среды] = '{temperature}', [цена] = '{price}', [цена_конкурентов] = '{concPrice}', [цена_на_рекламу] = '{adPrice}', [скидка] = '{discount}', [количество_проданных] = '{soldAmount}', [код_выпускаемой_продукции] = '{productKey}', [месяц] = '{month}', [код_предприятия] = '{plantId}', [год] = '{year}' " +
+                    $"WHERE [номер_факта_выпуска] = {factId};",
+                    connection
+                );
+                command.ExecuteNonQuery();
+                connection.Close();
+                return "Команда выполнена";
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+        }
+
+        public string UpdatePlant(string name, string plantId)
+        {
+            try
+            {
+                SqlCommand command = new SqlCommand($"UPDATE [VKR].[dbo].[Предприятие] SET [название] = '{name}' WHERE [код_предприятия] = {plantId};", connection);
+                command.ExecuteNonQuery();
+                connection.Close();
+                return "Команда выполнена";
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+        }
+
+        public string UpdateBranch(string name, string plantId, string branchId)
+        {
+            try
+            {
+                SqlCommand command = new SqlCommand($"UPDATE [VKR].[dbo].[Отдел] SET [наименование] = '{name}', [код_предприятия] = '{plantId}' WHERE [код_отдела] = {branchId};", connection);
                 command.ExecuteNonQuery();
                 connection.Close();
                 return "Команда выполнена";

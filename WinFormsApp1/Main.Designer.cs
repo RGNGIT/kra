@@ -37,6 +37,9 @@
             tabPage5 = new TabPage();
             tabControlDataworks = new TabControl();
             tabPage111 = new TabPage();
+            textBoxFactYear = new TextBox();
+            label37 = new Label();
+            buttonUpdateFact = new Button();
             label27 = new Label();
             comboBoxPlant = new ComboBox();
             textBoxMonth = new TextBox();
@@ -58,6 +61,7 @@
             label18 = new Label();
             dataGridViewFact = new DataGridView();
             tabPage6 = new TabPage();
+            buttonUpdatePlant = new Button();
             buttonAddPlant = new Button();
             textBoxPlantName = new TextBox();
             label28 = new Label();
@@ -139,19 +143,25 @@
             pictureBox1 = new PictureBox();
             label9 = new Label();
             tabPage4 = new TabPage();
+            label36 = new Label();
+            label35 = new Label();
+            label34 = new Label();
+            label33 = new Label();
+            label32 = new Label();
+            textBoxStatPrice = new TextBox();
+            textBoxStatDiscount = new TextBox();
+            textBoxStatAdPrice = new TextBox();
+            textBoxStatConcurrent = new TextBox();
+            textBoxStatTemp = new TextBox();
             label31 = new Label();
             dataGridViewStatAlternatives = new DataGridView();
             label1 = new Label();
             comboBoxStatBranch = new ComboBox();
             labelStatProdName = new Label();
-            labelStatsDiscount = new Label();
-            labelStatsAdPrice = new Label();
-            labelStatsConcurrent = new Label();
-            labelStatPrice = new Label();
-            labelStatTemp = new Label();
             labelStatValue = new Label();
             dataGridViewStats = new DataGridView();
             Column13 = new DataGridViewTextBoxColumn();
+            Column14 = new DataGridViewTextBoxColumn();
             Column7 = new DataGridViewTextBoxColumn();
             Column10 = new DataGridViewTextBoxColumn();
             Column11 = new DataGridViewTextBoxColumn();
@@ -165,6 +175,7 @@
             dataGridViewBuffer = new DataGridView();
             button5 = new Button();
             label25ddddd = new Label();
+            buttonUpdateBranch = new Button();
             tabControMain.SuspendLayout();
             tabPage5.SuspendLayout();
             tabControlDataworks.SuspendLayout();
@@ -242,6 +253,9 @@
             // 
             // tabPage111
             // 
+            tabPage111.Controls.Add(textBoxFactYear);
+            tabPage111.Controls.Add(label37);
+            tabPage111.Controls.Add(buttonUpdateFact);
             tabPage111.Controls.Add(label27);
             tabPage111.Controls.Add(comboBoxPlant);
             tabPage111.Controls.Add(textBoxMonth);
@@ -270,10 +284,36 @@
             tabPage111.Text = "Факт выпуска";
             tabPage111.UseVisualStyleBackColor = true;
             // 
+            // textBoxFactYear
+            // 
+            textBoxFactYear.Location = new Point(6, 343);
+            textBoxFactYear.Name = "textBoxFactYear";
+            textBoxFactYear.Size = new Size(233, 23);
+            textBoxFactYear.TabIndex = 21;
+            // 
+            // label37
+            // 
+            label37.AutoSize = true;
+            label37.Location = new Point(6, 325);
+            label37.Name = "label37";
+            label37.Size = new Size(26, 15);
+            label37.TabIndex = 20;
+            label37.Text = "Год";
+            // 
+            // buttonUpdateFact
+            // 
+            buttonUpdateFact.Location = new Point(6, 629);
+            buttonUpdateFact.Name = "buttonUpdateFact";
+            buttonUpdateFact.Size = new Size(233, 23);
+            buttonUpdateFact.TabIndex = 19;
+            buttonUpdateFact.Text = "Обновить";
+            buttonUpdateFact.UseVisualStyleBackColor = true;
+            buttonUpdateFact.Click += buttonUpdateFact_Click;
+            // 
             // label27
             // 
             label27.AutoSize = true;
-            label27.Location = new Point(6, 321);
+            label27.Location = new Point(6, 369);
             label27.Name = "label27";
             label27.Size = new Size(80, 15);
             label27.TabIndex = 18;
@@ -283,7 +323,7 @@
             // 
             comboBoxPlant.DropDownStyle = ComboBoxStyle.DropDownList;
             comboBoxPlant.FormattingEnabled = true;
-            comboBoxPlant.Location = new Point(6, 339);
+            comboBoxPlant.Location = new Point(6, 387);
             comboBoxPlant.Name = "comboBoxPlant";
             comboBoxPlant.Size = new Size(233, 23);
             comboBoxPlant.TabIndex = 17;
@@ -318,7 +358,7 @@
             // 
             comboBoxFactProduct.DropDownStyle = ComboBoxStyle.DropDownList;
             comboBoxFactProduct.FormattingEnabled = true;
-            comboBoxFactProduct.Location = new Point(6, 383);
+            comboBoxFactProduct.Location = new Point(6, 431);
             comboBoxFactProduct.Name = "comboBoxFactProduct";
             comboBoxFactProduct.Size = new Size(233, 23);
             comboBoxFactProduct.TabIndex = 14;
@@ -326,7 +366,7 @@
             // label24
             // 
             label24.AutoSize = true;
-            label24.Location = new Point(6, 365);
+            label24.Location = new Point(6, 413);
             label24.Name = "label24";
             label24.Size = new Size(53, 15);
             label24.TabIndex = 13;
@@ -436,9 +476,12 @@
             dataGridViewFact.RowTemplate.Height = 25;
             dataGridViewFact.Size = new Size(644, 675);
             dataGridViewFact.TabIndex = 0;
+            dataGridViewFact.CellMouseClick += dataGridViewFact_CellMouseClick;
+            dataGridViewFact.RowHeaderMouseClick += dataGridViewFact_RowHeaderMouseClick;
             // 
             // tabPage6
             // 
+            tabPage6.Controls.Add(buttonUpdatePlant);
             tabPage6.Controls.Add(buttonAddPlant);
             tabPage6.Controls.Add(textBoxPlantName);
             tabPage6.Controls.Add(label28);
@@ -450,6 +493,16 @@
             tabPage6.TabIndex = 1;
             tabPage6.Text = "Предприятие";
             tabPage6.UseVisualStyleBackColor = true;
+            // 
+            // buttonUpdatePlant
+            // 
+            buttonUpdatePlant.Location = new Point(6, 629);
+            buttonUpdatePlant.Name = "buttonUpdatePlant";
+            buttonUpdatePlant.Size = new Size(233, 23);
+            buttonUpdatePlant.TabIndex = 20;
+            buttonUpdatePlant.Text = "Обновить";
+            buttonUpdatePlant.UseVisualStyleBackColor = true;
+            buttonUpdatePlant.Click += buttonUpdatePlant_Click;
             // 
             // buttonAddPlant
             // 
@@ -485,9 +538,12 @@
             dataGridViewPlant.RowTemplate.Height = 25;
             dataGridViewPlant.Size = new Size(644, 675);
             dataGridViewPlant.TabIndex = 1;
+            dataGridViewPlant.CellMouseClick += dataGridViewPlant_CellMouseClick;
+            dataGridViewPlant.RowHeaderMouseClick += dataGridViewPlant_RowHeaderMouseClick;
             // 
             // tabPage7
             // 
+            tabPage7.Controls.Add(buttonUpdateBranch);
             tabPage7.Controls.Add(buttonAddBranch);
             tabPage7.Controls.Add(label30);
             tabPage7.Controls.Add(comboBoxBranchPlant);
@@ -554,6 +610,8 @@
             dataGridViewBranch.RowTemplate.Height = 25;
             dataGridViewBranch.Size = new Size(644, 675);
             dataGridViewBranch.TabIndex = 2;
+            dataGridViewBranch.CellMouseClick += dataGridViewBranch_CellMouseClick;
+            dataGridViewBranch.RowHeaderMouseClick += dataGridViewBranch_RowHeaderMouseClick;
             // 
             // tabPage8
             // 
@@ -1186,16 +1244,21 @@
             // 
             // tabPage4
             // 
+            tabPage4.Controls.Add(label36);
+            tabPage4.Controls.Add(label35);
+            tabPage4.Controls.Add(label34);
+            tabPage4.Controls.Add(label33);
+            tabPage4.Controls.Add(label32);
+            tabPage4.Controls.Add(textBoxStatPrice);
+            tabPage4.Controls.Add(textBoxStatDiscount);
+            tabPage4.Controls.Add(textBoxStatAdPrice);
+            tabPage4.Controls.Add(textBoxStatConcurrent);
+            tabPage4.Controls.Add(textBoxStatTemp);
             tabPage4.Controls.Add(label31);
             tabPage4.Controls.Add(dataGridViewStatAlternatives);
             tabPage4.Controls.Add(label1);
             tabPage4.Controls.Add(comboBoxStatBranch);
             tabPage4.Controls.Add(labelStatProdName);
-            tabPage4.Controls.Add(labelStatsDiscount);
-            tabPage4.Controls.Add(labelStatsAdPrice);
-            tabPage4.Controls.Add(labelStatsConcurrent);
-            tabPage4.Controls.Add(labelStatPrice);
-            tabPage4.Controls.Add(labelStatTemp);
             tabPage4.Controls.Add(labelStatValue);
             tabPage4.Controls.Add(dataGridViewStats);
             tabPage4.Controls.Add(label25);
@@ -1207,10 +1270,95 @@
             tabPage4.Text = "Статистический отчет";
             tabPage4.UseVisualStyleBackColor = true;
             // 
+            // label36
+            // 
+            label36.AutoSize = true;
+            label36.Location = new Point(454, 380);
+            label36.Name = "label36";
+            label36.Size = new Size(46, 15);
+            label36.TabIndex = 49;
+            label36.Text = "Скидка";
+            // 
+            // label35
+            // 
+            label35.AutoSize = true;
+            label35.Location = new Point(326, 373);
+            label35.Name = "label35";
+            label35.Size = new Size(72, 30);
+            label35.TabIndex = 48;
+            label35.Text = "      Цена на\r\n      рекламу";
+            // 
+            // label34
+            // 
+            label34.AutoSize = true;
+            label34.Location = new Point(227, 373);
+            label34.Name = "label34";
+            label34.Size = new Size(77, 30);
+            label34.TabIndex = 47;
+            label34.Text = "      Цена\r\nконкурентов";
+            // 
+            // label33
+            // 
+            label33.AutoSize = true;
+            label33.Location = new Point(139, 380);
+            label33.Name = "label33";
+            label33.Size = new Size(35, 15);
+            label33.TabIndex = 46;
+            label33.Text = "Цена";
+            // 
+            // label32
+            // 
+            label32.AutoSize = true;
+            label32.Location = new Point(12, 365);
+            label32.Name = "label32";
+            label32.Size = new Size(82, 45);
+            label32.TabIndex = 45;
+            label32.Text = "Температура\r\nокружающей\r\n       среды";
+            // 
+            // textBoxStatPrice
+            // 
+            textBoxStatPrice.Location = new Point(109, 417);
+            textBoxStatPrice.Name = "textBoxStatPrice";
+            textBoxStatPrice.ReadOnly = true;
+            textBoxStatPrice.Size = new Size(100, 23);
+            textBoxStatPrice.TabIndex = 44;
+            // 
+            // textBoxStatDiscount
+            // 
+            textBoxStatDiscount.Location = new Point(427, 417);
+            textBoxStatDiscount.Name = "textBoxStatDiscount";
+            textBoxStatDiscount.ReadOnly = true;
+            textBoxStatDiscount.Size = new Size(100, 23);
+            textBoxStatDiscount.TabIndex = 43;
+            // 
+            // textBoxStatAdPrice
+            // 
+            textBoxStatAdPrice.Location = new Point(321, 417);
+            textBoxStatAdPrice.Name = "textBoxStatAdPrice";
+            textBoxStatAdPrice.ReadOnly = true;
+            textBoxStatAdPrice.Size = new Size(100, 23);
+            textBoxStatAdPrice.TabIndex = 42;
+            // 
+            // textBoxStatConcurrent
+            // 
+            textBoxStatConcurrent.Location = new Point(215, 417);
+            textBoxStatConcurrent.Name = "textBoxStatConcurrent";
+            textBoxStatConcurrent.ReadOnly = true;
+            textBoxStatConcurrent.Size = new Size(100, 23);
+            textBoxStatConcurrent.TabIndex = 41;
+            // 
+            // textBoxStatTemp
+            // 
+            textBoxStatTemp.Location = new Point(3, 417);
+            textBoxStatTemp.Name = "textBoxStatTemp";
+            textBoxStatTemp.ReadOnly = true;
+            textBoxStatTemp.Size = new Size(100, 23);
+            textBoxStatTemp.TabIndex = 40;
+            // 
             // label31
             // 
             label31.AutoSize = true;
-            label31.Location = new Point(419, 365);
+            label31.Location = new Point(533, 365);
             label31.Name = "label31";
             label31.Size = new Size(165, 15);
             label31.TabIndex = 13;
@@ -1219,10 +1367,10 @@
             // dataGridViewStatAlternatives
             // 
             dataGridViewStatAlternatives.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewStatAlternatives.Location = new Point(419, 380);
+            dataGridViewStatAlternatives.Location = new Point(533, 380);
             dataGridViewStatAlternatives.Name = "dataGridViewStatAlternatives";
             dataGridViewStatAlternatives.RowTemplate.Height = 25;
-            dataGridViewStatAlternatives.Size = new Size(493, 344);
+            dataGridViewStatAlternatives.Size = new Size(379, 344);
             dataGridViewStatAlternatives.TabIndex = 12;
             // 
             // label1
@@ -1247,61 +1395,16 @@
             // labelStatProdName
             // 
             labelStatProdName.AutoSize = true;
-            labelStatProdName.Location = new Point(3, 365);
+            labelStatProdName.Location = new Point(419, 25);
             labelStatProdName.Name = "labelStatProdName";
-            labelStatProdName.Size = new Size(44, 15);
+            labelStatProdName.Size = new Size(0, 15);
             labelStatProdName.TabIndex = 9;
-            labelStatProdName.Text = "label30";
-            // 
-            // labelStatsDiscount
-            // 
-            labelStatsDiscount.AutoSize = true;
-            labelStatsDiscount.Location = new Point(3, 440);
-            labelStatsDiscount.Name = "labelStatsDiscount";
-            labelStatsDiscount.Size = new Size(44, 15);
-            labelStatsDiscount.TabIndex = 8;
-            labelStatsDiscount.Text = "label30";
-            // 
-            // labelStatsAdPrice
-            // 
-            labelStatsAdPrice.AutoSize = true;
-            labelStatsAdPrice.Location = new Point(3, 425);
-            labelStatsAdPrice.Name = "labelStatsAdPrice";
-            labelStatsAdPrice.Size = new Size(44, 15);
-            labelStatsAdPrice.TabIndex = 7;
-            labelStatsAdPrice.Text = "label29";
-            // 
-            // labelStatsConcurrent
-            // 
-            labelStatsConcurrent.AutoSize = true;
-            labelStatsConcurrent.Location = new Point(3, 410);
-            labelStatsConcurrent.Name = "labelStatsConcurrent";
-            labelStatsConcurrent.Size = new Size(44, 15);
-            labelStatsConcurrent.TabIndex = 6;
-            labelStatsConcurrent.Text = "label28";
-            // 
-            // labelStatPrice
-            // 
-            labelStatPrice.AutoSize = true;
-            labelStatPrice.Location = new Point(3, 395);
-            labelStatPrice.Name = "labelStatPrice";
-            labelStatPrice.Size = new Size(44, 15);
-            labelStatPrice.TabIndex = 5;
-            labelStatPrice.Text = "label27";
-            // 
-            // labelStatTemp
-            // 
-            labelStatTemp.AutoSize = true;
-            labelStatTemp.Location = new Point(3, 380);
-            labelStatTemp.Name = "labelStatTemp";
-            labelStatTemp.Size = new Size(44, 15);
-            labelStatTemp.TabIndex = 4;
-            labelStatTemp.Text = "label26";
+            labelStatProdName.TextAlign = ContentAlignment.MiddleRight;
             // 
             // labelStatValue
             // 
             labelStatValue.AutoSize = true;
-            labelStatValue.Location = new Point(419, 25);
+            labelStatValue.Location = new Point(3, 443);
             labelStatValue.Name = "labelStatValue";
             labelStatValue.Size = new Size(0, 15);
             labelStatValue.TabIndex = 3;
@@ -1309,7 +1412,7 @@
             // dataGridViewStats
             // 
             dataGridViewStats.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewStats.Columns.AddRange(new DataGridViewColumn[] { Column13, Column7, Column10, Column11, Column12, Column8, Column9 });
+            dataGridViewStats.Columns.AddRange(new DataGridViewColumn[] { Column13, Column14, Column7, Column10, Column11, Column12, Column8, Column9 });
             dataGridViewStats.Location = new Point(3, 51);
             dataGridViewStats.Name = "dataGridViewStats";
             dataGridViewStats.RowTemplate.Height = 25;
@@ -1320,6 +1423,11 @@
             // 
             Column13.HeaderText = "Месяц";
             Column13.Name = "Column13";
+            // 
+            // Column14
+            // 
+            Column14.HeaderText = "Год";
+            Column14.Name = "Column14";
             // 
             // Column7
             // 
@@ -1415,6 +1523,16 @@
             label25ddddd.TabIndex = 55;
             label25ddddd.Text = "label25";
             // 
+            // buttonUpdateBranch
+            // 
+            buttonUpdateBranch.Location = new Point(6, 629);
+            buttonUpdateBranch.Name = "buttonUpdateBranch";
+            buttonUpdateBranch.Size = new Size(233, 23);
+            buttonUpdateBranch.TabIndex = 22;
+            buttonUpdateBranch.Text = "Обновить";
+            buttonUpdateBranch.UseVisualStyleBackColor = true;
+            buttonUpdateBranch.Click += buttonUpdateBranch_Click;
+            // 
             // Main
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -1425,6 +1543,7 @@
             Controls.Add(tabControMain);
             Controls.Add(button5);
             Controls.Add(dataGridViewBuffer);
+            FormBorderStyle = FormBorderStyle.FixedDialog;
             Name = "Main";
             Text = "Form1";
             Load += Main_Load;
@@ -1547,21 +1666,9 @@
         private ComboBox comboBoxPrognozes;
         private DataGridView dataGridViewStats;
         private Label labelStatValue;
-        private Label labelStatsDiscount;
-        private Label labelStatsAdPrice;
-        private Label labelStatsConcurrent;
-        private Label labelStatPrice;
-        private Label labelStatTemp;
         private Label labelStatProdName;
         private TextBox textBoxMonth;
         private Label label26;
-        private DataGridViewTextBoxColumn Column13;
-        private DataGridViewTextBoxColumn Column7;
-        private DataGridViewTextBoxColumn Column10;
-        private DataGridViewTextBoxColumn Column11;
-        private DataGridViewTextBoxColumn Column12;
-        private DataGridViewTextBoxColumn Column8;
-        private DataGridViewTextBoxColumn Column9;
         private Label label27;
         private ComboBox comboBoxPlant;
         private TabPage tabPage6;
@@ -1598,5 +1705,28 @@
         private Label label31;
         private TabPage tabPage8;
         private DataGridView dataGridViewProduction;
+        private TextBox textBoxStatPrice;
+        private TextBox textBoxStatDiscount;
+        private TextBox textBoxStatAdPrice;
+        private TextBox textBoxStatConcurrent;
+        private TextBox textBoxStatTemp;
+        private Label label33;
+        private Label label32;
+        private Label label36;
+        private Label label35;
+        private Label label34;
+        private DataGridViewTextBoxColumn Column13;
+        private DataGridViewTextBoxColumn Column14;
+        private DataGridViewTextBoxColumn Column7;
+        private DataGridViewTextBoxColumn Column10;
+        private DataGridViewTextBoxColumn Column11;
+        private DataGridViewTextBoxColumn Column12;
+        private DataGridViewTextBoxColumn Column8;
+        private DataGridViewTextBoxColumn Column9;
+        private Button buttonUpdateFact;
+        private TextBox textBoxFactYear;
+        private Label label37;
+        private Button buttonUpdatePlant;
+        private Button buttonUpdateBranch;
     }
 }
