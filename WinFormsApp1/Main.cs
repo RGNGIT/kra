@@ -136,11 +136,6 @@
             label11.Visible = true;
         }
 
-        private void tabPage1_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void calcKraAl()
         {
             List<List<double>> aluminium = new List<List<double>>();
@@ -465,7 +460,7 @@
             comboBoxFactProduct.Items.Clear();
             for (int i = 0; i < dataGridViewBuffer.Rows.Count - 1; i++)
             {
-                comboBoxFactProduct.Items.Add($"{dataGridViewBuffer.Rows[i].Cells[1].Value} {dataGridViewBuffer.Rows[i].Cells[2].Value}");
+                comboBoxFactProduct.Items.Add($"{dataGridViewBuffer.Rows[i].Cells[1].Value}");
             }
         }
 
@@ -478,13 +473,6 @@
             {
                 comboBoxPrognozes.Items.Add($"Прогноз {dataGridViewBuffer.Rows[i].Cells[0].Value}");
             }
-        }
-
-        string RemoveWhitespace(string input)
-        {
-            return new string(input.ToCharArray()
-                .Where(c => !Char.IsWhiteSpace(c))
-                .ToArray());
         }
 
         void UpdateComboPlant()
@@ -546,7 +534,7 @@
                         UpdateProductionCombo();
                         DBWorks works1 = new DBWorks(connection);
                         dataGridViewFact.DataSource = works1.ReturnTable(
-                            "a.[номер_факта_выпуска], a.[месяц], a.[темп_окр_среды], a.[цена], a.[цена_конкурентов], a.[цена_на_рекламу], a.[скидка], a.[количество_проданных], " +
+                            "a.[номер_факта_выпуска], a.[месяц], a.[год], a.[темп_окр_среды], a.[цена], a.[цена_конкурентов], a.[цена_на_рекламу], a.[скидка], a.[количество_проданных], " +
                             "b.[наименование_выпускаемой_продукции], c.[название] AS 'Завод'",
                             "[VKR].[dbo].[Факт_выпуска] AS a, [VKR].[dbo].[Выпускаемая_продукция] AS b, [VKR].[dbo].[Предприятие] AS c ",
                             "WHERE a.[код_выпускаемой_продукции] = b.[номер_выпускаемой_продукции] AND a.[код_предприятия] = c.[код_предприятия];"
@@ -799,17 +787,24 @@
 
         void FactSelected()
         {
-
+            textBoxFactTempOrkSred.Text = dataGridViewFact.SelectedRows[0].Cells[3].Value.ToString();
+            textBoxFactPrice.Text = dataGridViewFact.SelectedRows[0].Cells[4].Value.ToString();
+            textBoxFactConcurentPrice.Text = dataGridViewFact.SelectedRows[0].Cells[5].Value.ToString();
+            textBoxFactAdPrice.Text = dataGridViewFact.SelectedRows[0].Cells[6].Value.ToString();
+            textBoxFactDiscount.Text = dataGridViewFact.SelectedRows[0].Cells[7].Value.ToString();
+            textBoxFactAmountSold.Text = dataGridViewFact.SelectedRows[0].Cells[8].Value.ToString();
+            textBoxMonth.Text = dataGridViewFact.SelectedRows[0].Cells[1].Value.ToString();
+            textBoxFactYear.Text = dataGridViewFact.SelectedRows[0].Cells[2].Value.ToString();
         }
 
         void PlantSelected()
         {
-
+            textBoxPlantName.Text = dataGridViewPlant.SelectedRows[0].Cells[1].Value.ToString();
         }
 
         void BranchSelected()
         {
-
+            textBoxBranchName.Text = dataGridViewBranch.SelectedRows[0].Cells[1].Value.ToString();
         }
 
         private void dataGridViewFact_RowHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
