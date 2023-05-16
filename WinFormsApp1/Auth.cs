@@ -5,7 +5,7 @@ namespace WinFormsApp1
 {
     public partial class Auth : Form
     {
-        string[] login = { "zalupa1", "zalupa2", "zalupa3" };
+        string[] login = { "admin", "ruk", "oper" };
         string[] pass = { "123", "123", "123" };
         string[] role = { "admin", "rukovoditel", "operator" };
         int N;

@@ -1,4 +1,7 @@
-﻿namespace WinFormsApp1
+﻿using Radiator;
+using System.Diagnostics;
+
+namespace WinFormsApp1
 {
     public partial class Main : Form
     {
@@ -418,14 +421,14 @@
             DBWorks works1 = new DBWorks(connection);
             // Аллюм
             dataGridViewFactAlum.DataSource = works1.ReturnTable(
-                "c.[темп_окр_среды] AS 'Температура окружающей среды', c.[цена] AS 'Цена', c.[цена_конкурентов] AS 'Цена конкурентов', c.[цена_на_рекламу] AS 'Цена на рекламу', c.[скидка] AS 'Скидка', c.[количество_проданных] AS 'Количество выпущенных', c.[месяц], c.[год], c.[номер_факта_выпуска] ",
+                "c.[темп_окр_среды] AS 'Среднемесячная температура окружающей среды', c.[цена] AS 'Цена', c.[цена_конкурентов] AS 'Цена конкурентов', c.[цена_на_рекламу] AS 'Цена на рекламу', c.[скидка] AS 'Скидка', c.[количество_проданных] AS 'Количество выпущенных', c.[месяц], c.[год], c.[номер_факта_выпуска] ",
                 "[VKR].[dbo].[Выпускаемая_продукция] AS a, [VKR].[dbo].[Вид_выпускаемой_продукции] AS b, [VKR].[dbo].[Факт_выпуска] AS c",
                 $"WHERE a.[код_вида] = b.[код_вида] AND c.[код_выпускаемой_продукции] = a.[номер_выпускаемой_продукции] AND b.[код_вида] = 9 AND c.[код_предприятия] = {plantId};"
             );
             DBWorks works2 = new DBWorks(connection);
             // Медь
             dataGridViewFactCopper.DataSource = works2.ReturnTable(
-                "c.[темп_окр_среды] AS 'Температура окружающей среды', c.[цена] AS 'Цена', c.[цена_конкурентов] AS 'Цена конкурентов', c.[цена_на_рекламу] AS 'Цена на рекламу', c.[скидка] AS 'Скидка', c.[количество_проданных] AS 'Количество выпущенных', c.[месяц], c.[год], c.[номер_факта_выпуска] ",
+                "c.[темп_окр_среды] AS 'Среднемесячная температура окружающей среды', c.[цена] AS 'Цена', c.[цена_конкурентов] AS 'Цена конкурентов', c.[цена_на_рекламу] AS 'Цена на рекламу', c.[скидка] AS 'Скидка', c.[количество_проданных] AS 'Количество выпущенных', c.[месяц], c.[год], c.[номер_факта_выпуска] ",
                 "[VKR].[dbo].[Выпускаемая_продукция] AS a, [VKR].[dbo].[Вид_выпускаемой_продукции] AS b, [VKR].[dbo].[Факт_выпуска] AS c",
                 $"WHERE a.[код_вида] = b.[код_вида] AND c.[код_выпускаемой_продукции] = a.[номер_выпускаемой_продукции] AND b.[код_вида] = 8 AND c.[код_предприятия] = {plantId};"
             );
@@ -504,7 +507,7 @@
             DBWorks works = new DBWorks(connection);
             dataGridViewBuffer.DataSource = works.ReturnTable(
                 "a.[наименование_выпускаемой_продукции], c.[наименование], b.[значение], a.[стоимость]",
-                "[VKR].[dbo].[Выпускаемая_продукция] AS a, [VKR].[dbo].[Продукция_показатель] AS b, [VKR].[dbo].[Технический_показатель] AS c",
+                "[VKR].[dbo].[Выпускаемая_продукция] AS a, [VKR].[dbo].[Позиция_паспорта_выпускаемой_продукции] AS b, [VKR].[dbo].[Технический_показатель] AS c",
                 "WHERE b.[код_продукции] = a.[номер_выпускаемой_продукции] AND b.[код_показателя] = c.[код_технического_показателя];"
             );
             for (int i = 0; i < dataGridViewBuffer.Rows.Count - 1; i += 3)
@@ -542,7 +545,7 @@
                         DBWorks works5 = new DBWorks(connection);
                         dataGridViewProduction.DataSource = works5.ReturnTable(
                             "a.[номер_выпускаемой_продукции], a.[наименование_выпускаемой_продукции], c.[наименование], b.[значение], a.[стоимость]",
-                            "[VKR].[dbo].[Выпускаемая_продукция] AS a, [VKR].[dbo].[Продукция_показатель] AS b, [VKR].[dbo].[Технический_показатель] AS c",
+                            "[VKR].[dbo].[Выпускаемая_продукция] AS a, [VKR].[dbo].[Позиция_паспорта_выпускаемой_продукции] AS b, [VKR].[dbo].[Технический_показатель] AS c",
                             "WHERE b.[код_продукции] = a.[номер_выпускаемой_продукции] AND b.[код_показателя] = c.[код_технического_показателя];"
                         );
                         break;
@@ -635,7 +638,7 @@
             { 12, "Декабрь" }
         };
 
-        private void comboBoxPrognozes_SelectedIndexChanged(object sender, EventArgs e)
+        void BuildReport()
         {
             DBWorks works1 = new DBWorks(connection);
             string[] prognozId = comboBoxPrognozes.Text.Split(' ');
@@ -644,7 +647,7 @@
                 "[VKR].[dbo].[Прогноз] AS a, [VKR].[dbo].[План_выпуска] AS b",
                 $"WHERE a.[код_плана] = b.[номер_плана] AND a.[код_прогноза] = {prognozId[1]};"
             );
-            labelStatValue.Text = "Результат прогноза на следующий месяц Y = " + dataGridViewBuffer.Rows[0].Cells[1].Value.ToString();
+            labelStatValue.Text = "Результат прогнозируемого спроса на следующий месяц Y = " + dataGridViewBuffer.Rows[0].Cells[1].Value.ToString();
             string planId = dataGridViewBuffer.Rows[0].Cells[3].Value.ToString()!;
             string[] factTuple = dataGridViewBuffer.Rows[0].Cells[2].Value.ToString()!.Split(',');
             DBWorks works2 = new DBWorks(connection);
@@ -678,6 +681,11 @@
                     dataGridViewBuffer.Rows[0].Cells[6].Value
                 );
             }
+        }
+
+        private void comboBoxPrognozes_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            BuildReport();
         }
 
         private void tabControlDataworks_SelectedIndexChanged(object sender, EventArgs e)
@@ -873,6 +881,32 @@
             DBWorks works = new DBWorks(connection);
             works.UpdateBranch(textBoxBranchName.Text, comboBoxBranchPlant.Text.Split(' ')[0], dataGridViewBranch.SelectedRows[0].Cells[0].Value.ToString()!);
             RefreshAll();
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            Dictionary<string, DataGridView> fuckts = new Dictionary<string, DataGridView>();
+            string[,] results = new string[comboBoxPrognozes.Items.Count, 6];
+            for (int i = 0; i < comboBoxPrognozes.Items.Count; i++) 
+            {
+                comboBoxPrognozes.SelectedIndex = i;
+                BuildReport();
+                fuckts.Add($"{comboBoxPrognozes.Text} - {labelStatProdName.Text}", dataGridViewStats);
+                results[i, 0] = textBoxStatTemp.Text;
+                results[i, 1] = textBoxStatPrice.Text;
+                results[i, 2] = textBoxStatConcurrent.Text;
+                results[i, 3] = textBoxStatAdPrice.Text;
+                results[i, 4] = textBoxStatDiscount.Text;
+                results[i, 5] = labelStatValue.Text;
+            }
+            ExcelHelper excel = new();
+            excel.WriteFactGrid(fuckts, results, comboBoxStatBranch.Text, dataGridViewStatAlternatives);
+            var p = new Process();
+            p.StartInfo = new ProcessStartInfo("kek.xlsx")
+            {
+                UseShellExecute = true
+            };
+            p.Start();
         }
     }
 }
