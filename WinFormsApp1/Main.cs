@@ -1,5 +1,6 @@
 ﻿using Radiator;
 using System.Diagnostics;
+using System.Windows.Forms;
 
 namespace WinFormsApp1
 {
@@ -504,6 +505,7 @@ namespace WinFormsApp1
 
         void UpdateAlternativesGrid()
         {
+            dataGridView2.Rows.Clear();
             DBWorks works = new DBWorks(connection);
             dataGridViewBuffer.DataSource = works.ReturnTable(
                 "a.[наименование_выпускаемой_продукции], c.[наименование], b.[значение], a.[стоимость]",
@@ -524,11 +526,11 @@ namespace WinFormsApp1
 
         void RefreshAll()
         {
-            if (tabControMain.SelectedIndex == 2)
+            if (tabControMain.SelectedIndex == 2 || ((UserStore.role == "operator" || UserStore.role == "admin") && tabControMain.SelectedIndex == 1))
             {
                 UpdateAlternativesGrid();
             }
-            if (tabControMain.SelectedIndex == 0)
+            if (tabControMain.SelectedIndex == 3 || (UserStore.role == "operator" && tabControMain.SelectedIndex == 2))
             {
                 switch (tabControlDataworks.SelectedIndex)
                 {
@@ -561,7 +563,7 @@ namespace WinFormsApp1
                 }
             }
             DBWorks works2 = new DBWorks(connection);
-            if (tabControMain.SelectedIndex == 1)
+            if (tabControMain.SelectedIndex == 0)
             {
                 // SetProductionFacts();
                 UpdateComboPrognozPlant();
@@ -572,11 +574,10 @@ namespace WinFormsApp1
                     "WHERE a.[код_выпускаемой_продукции] = b.[номер_выпускаемой_продукции] AND b.[код_вида] = c.[код_вида];"
                 );
             }
-            if (tabControMain.SelectedIndex == 3 || (UserStore.role == "rukovoditel" && tabControMain.SelectedIndex == 1))
+            if (tabControMain.SelectedIndex == 2 || (UserStore.role == "rukovoditel" && tabControMain.SelectedIndex == 0))
             {
                 UpdatePrognozBranchCombo();
                 UpdateAlternativeStatGrid();
-
             }
         }
 
